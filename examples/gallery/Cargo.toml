@@ -1,0 +1,11 @@
+[package]
+name = "gallery"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+rustheme = { path = "../../rustheme" }
+rustheme-core = { path = "../../rustheme-core" }
+iced = "0.13"

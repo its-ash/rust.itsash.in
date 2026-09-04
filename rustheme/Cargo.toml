@@ -1,0 +1,10 @@
+[package]
+name = "rustheme"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "A MUI-inspired theming framework and component library for the Iced GUI toolkit."
+
+[dependencies]
+rustheme-core = { path = "../rustheme-core" }
+iced = { version = "0.13", features = ["canvas"] }

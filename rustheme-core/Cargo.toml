@@ -1,0 +1,9 @@
+[package]
+name = "rustheme-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Design tokens and theme primitives for RustTheme, a MUI-style theming framework for Iced."
+
+[dependencies]
+iced_core = "0.13"
