@@ -81,6 +81,22 @@ cargo run -p gallery
 | Menu        | menu (popover, composed via `stack`)                      |
 | Dialog      | dialog (modal, composed via `stack`)                       |
 | Snackbar    | snackbar (composed via `stack`, with dismiss action)        |
+| IconButton  | primary, secondary, outlined, text                        |
+| Fab         | primary, secondary, extended                               |
+| Alert       | success, info, warning, error, with_title (dismissible)     |
+| Accordion   | accordion (expand/collapse, no layout animation)             |
+| Breadcrumbs | breadcrumbs (clickable trail, last segment static)           |
+| Pagination  | pagination (page buttons + prev/next)                        |
+| Skeleton    | text, rectangular, circular (static placeholder)             |
+| Stepper     | stepper (active/completed/upcoming steps)                    |
+| Backdrop    | scrim, backdrop (composed via `stack`)                        |
+| Rating      | rating (clickable star row)                                   |
+| Table       | table (header + rows)                                          |
+| Drawer      | drawer (left/right anchored, composed via `stack`)              |
+| Grid/Stack  | layout::stack, layout::grid (spacing-token layout helpers)      |
+| Autocomplete| autocomplete (text field + filtered dropdown)                    |
+| SpeedDial   | speed_dial (expandable Fab stack)                                  |
+| Timeline    | timeline (vertical event sequence)                                  |
 
 ## Workspace layout
 
