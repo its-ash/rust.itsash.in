@@ -6,6 +6,6 @@ pub struct Shape {
 
 impl Default for Shape {
     fn default() -> Self {
-        Self { border_radius: 4.0 }
+        Self { border_radius: 12.0 }
     }
 }

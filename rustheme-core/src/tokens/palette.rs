@@ -63,105 +63,110 @@ pub struct Palette {
 }
 
 impl Palette {
+    /// A modern, vibrant Material 3 -inspired light palette: dark text on
+    /// light/white surfaces, and white text on saturated color fills.
     pub fn light() -> Self {
         Self {
             primary: ColorSet {
-                main: hex("#1976d2"),
-                light: hex("#42a5f5"),
-                dark: hex("#1565c0"),
+                main: hex("#6750a4"),
+                light: hex("#9a82db"),
+                dark: hex("#4f378b"),
                 contrast_text: hex("#ffffff"),
             },
             secondary: ColorSet {
-                main: hex("#9c27b0"),
-                light: hex("#ba68c8"),
-                dark: hex("#7b1fa2"),
+                main: hex("#00897b"),
+                light: hex("#4ebaaa"),
+                dark: hex("#005b4f"),
                 contrast_text: hex("#ffffff"),
             },
             error: ColorSet {
-                main: hex("#d32f2f"),
-                light: hex("#ef5350"),
-                dark: hex("#c62828"),
+                main: hex("#ba1a1a"),
+                light: hex("#ff5449"),
+                dark: hex("#93000a"),
                 contrast_text: hex("#ffffff"),
             },
             warning: ColorSet {
-                main: hex("#ed6c02"),
-                light: hex("#ff9800"),
-                dark: hex("#e65100"),
-                contrast_text: hex("#ffffff"),
+                main: hex("#f9a825"),
+                light: hex("#ffd95a"),
+                dark: hex("#c17900"),
+                contrast_text: hex("#3e2723"),
             },
             info: ColorSet {
-                main: hex("#0288d1"),
-                light: hex("#03a9f4"),
-                dark: hex("#01579b"),
+                main: hex("#0061a4"),
+                light: hex("#5eb3ff"),
+                dark: hex("#00447c"),
                 contrast_text: hex("#ffffff"),
             },
             success: ColorSet {
                 main: hex("#2e7d32"),
-                light: hex("#4caf50"),
-                dark: hex("#1b5e20"),
+                light: hex("#60ad5e"),
+                dark: hex("#005005"),
                 contrast_text: hex("#ffffff"),
             },
             background: BackgroundColors {
-                default: hex("#f5f5f5"),
+                default: hex("#fef7ff"),
                 paper: hex("#ffffff"),
             },
             text: TextColors {
-                primary: hex("#212121"),
-                secondary: hex("#616161"),
-                disabled: hex("#9e9e9e"),
+                primary: hex("#1c1b1f"),
+                secondary: hex("#49454f"),
+                disabled: hex("#79747e"),
             },
-            divider: hex("#e0e0e0"),
+            divider: hex("#cac4d0"),
         }
     }
 
+    /// A modern, vibrant Material 3 -inspired dark palette: light text on
+    /// dark surfaces, and dark text on the brighter, desaturated color
+    /// fills M3 uses in dark mode for contrast and reduced eye strain.
     pub fn dark() -> Self {
         Self {
             primary: ColorSet {
-                main: hex("#90caf9"),
-                light: hex("#e3f2fd"),
-                dark: hex("#42a5f5"),
-                contrast_text: hex("#0a0a0a"),
+                main: hex("#d0bcff"),
+                light: hex("#eaddff"),
+                dark: hex("#9a82db"),
+                contrast_text: hex("#381e72"),
             },
             secondary: ColorSet {
-                main: hex("#ce93d8"),
-                light: hex("#f3e5f5"),
-                dark: hex("#ab47bc"),
-                contrast_text: hex("#0a0a0a"),
+                main: hex("#4ebaaa"),
+                light: hex("#a2f2e2"),
+                dark: hex("#00897b"),
+                contrast_text: hex("#00382e"),
             },
             error: ColorSet {
-                main: hex("#f44336"),
-                light: hex("#e57373"),
-                dark: hex("#d32f2f"),
-                contrast_text: hex("#0a0a0a"),
+                main: hex("#ffb4ab"),
+                light: hex("#ffdad6"),
+                dark: hex("#ff5449"),
+                contrast_text: hex("#690005"),
             },
             warning: ColorSet {
-                main: hex("#ffa726"),
-                light: hex("#ffb74d"),
-                dark: hex("#f57c00"),
-                contrast_text: hex("#0a0a0a"),
+                main: hex("#ffd95a"),
+                light: hex("#ffe999"),
+                dark: hex("#f9a825"),
+                contrast_text: hex("#402d00"),
             },
             info: ColorSet {
-                main: hex("#29b6f6"),
-                light: hex("#4fc3f7"),
-                dark: hex("#0288d1"),
-                contrast_text: hex("#0a0a0a"),
+                main: hex("#9fcaff"),
+                light: hex("#d1e4ff"),
+                dark: hex("#5eb3ff"),
+                contrast_text: hex("#003258"),
             },
             success: ColorSet {
-                main: hex("#66bb6a"),
-                light: hex("#81c784"),
-                dark: hex("#388e3c"),
-                contrast_text: hex("#0a0a0a"),
+                main: hex("#8bd689"),
+                light: hex("#c2f2c0"),
+                dark: hex("#4ca84a"),
+                contrast_text: hex("#00390a"),
             },
             background: BackgroundColors {
-                default: hex("#121212"),
-                paper: hex("#1e1e1e"),
+                default: hex("#141218"),
+                paper: hex("#211f26"),
             },
             text: TextColors {
-                primary: hex("#ffffff"),
-                secondary: hex("#b0b0b0"),
-                disabled: hex("#6c6c6c"),
+                primary: hex("#e6e1e5"),
+                secondary: hex("#cac4d0"),
+                disabled: hex("#79747e"),
             },
-            divider: hex("#333333"),
+            divider: hex("#49454f"),
         }
     }
 }

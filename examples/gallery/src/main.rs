@@ -26,6 +26,19 @@ enum Message {
     CloseMenu,
     MenuItemSelected(usize),
     TextChanged(String),
+    AccordionToggled,
+    AutocompleteChanged(String),
+    AutocompleteSelected(usize),
+    BreadcrumbSelected(usize),
+    OpenDrawer,
+    CloseDrawer,
+    OpenBackdrop,
+    CloseBackdrop,
+    PageSelected(usize),
+    RatingChanged(u8),
+    SpeedDialToggled,
+    SpeedDialAction(&'static str),
+    AlertDismissed,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -55,6 +68,8 @@ impl std::fmt::Display for Framework {
 const FRAMEWORKS: [Framework; 3] = [Framework::Iced, Framework::Egui, Framework::Druid];
 const TAB_LABELS: [&str; 3] = ["Overview", "Components", "Theming"];
 const MENU_ITEMS: [&str; 3] = ["Profile", "Settings", "Sign out"];
+const FRUIT_NAMES: [&str; 6] = ["Apple", "Apricot", "Avocado", "Banana", "Blueberry", "Cherry"];
+const BREADCRUMB_ITEMS: [&str; 3] = ["Home", "Components", "Gallery"];
 
 struct Gallery {
     dark_mode: bool,
@@ -69,6 +84,17 @@ struct Gallery {
     menu_open: bool,
     text_value: String,
     last_menu_selection: Option<usize>,
+    accordion_expanded: bool,
+    autocomplete_query: String,
+    autocomplete_selected: Option<String>,
+    last_breadcrumb: Option<usize>,
+    drawer_open: bool,
+    backdrop_open: bool,
+    current_page: usize,
+    rating_value: u8,
+    speed_dial_open: bool,
+    last_speed_dial_action: Option<&'static str>,
+    alert_dismissed: bool,
 }
 
 impl Default for Gallery {
@@ -86,6 +112,17 @@ impl Default for Gallery {
             menu_open: false,
             text_value: String::new(),
             last_menu_selection: None,
+            accordion_expanded: false,
+            autocomplete_query: String::new(),
+            autocomplete_selected: None,
+            last_breadcrumb: None,
+            drawer_open: false,
+            backdrop_open: false,
+            current_page: 1,
+            rating_value: 3,
+            speed_dial_open: false,
+            last_speed_dial_action: None,
+            alert_dismissed: false,
         }
     }
 }
@@ -123,7 +160,43 @@ impl Gallery {
                 self.menu_open = false;
             }
             Message::TextChanged(value) => self.text_value = value,
+            Message::AccordionToggled => self.accordion_expanded = !self.accordion_expanded,
+            Message::AutocompleteChanged(query) => {
+                self.autocomplete_query = query;
+                self.autocomplete_selected = None;
+            }
+            Message::AutocompleteSelected(index) => {
+                if let Some(name) = self.autocomplete_matches().get(index) {
+                    self.autocomplete_selected = Some((*name).to_string());
+                    self.autocomplete_query = (*name).to_string();
+                }
+            }
+            Message::BreadcrumbSelected(index) => self.last_breadcrumb = Some(index),
+            Message::OpenDrawer => self.drawer_open = true,
+            Message::CloseDrawer => self.drawer_open = false,
+            Message::OpenBackdrop => self.backdrop_open = true,
+            Message::CloseBackdrop => self.backdrop_open = false,
+            Message::PageSelected(page) => self.current_page = page,
+            Message::RatingChanged(value) => self.rating_value = value,
+            Message::SpeedDialToggled => self.speed_dial_open = !self.speed_dial_open,
+            Message::SpeedDialAction(label) => {
+                self.last_speed_dial_action = Some(label);
+                self.speed_dial_open = false;
+            }
+            Message::AlertDismissed => self.alert_dismissed = true,
         }
+    }
+
+    fn autocomplete_matches(&self) -> Vec<&'static str> {
+        let query = self.autocomplete_query.to_lowercase();
+        if query.is_empty() {
+            return Vec::new();
+        }
+        FRUIT_NAMES
+            .iter()
+            .copied()
+            .filter(|name| name.to_lowercase().contains(&query))
+            .collect()
     }
 
     fn view(&self) -> Element<'_, Message, RustTheme> {
@@ -319,15 +392,221 @@ impl Gallery {
             .into(),
         );
 
+        let icon_button_section = section(
+            "Icon Button",
+            iced::widget::row![
+                icon_button::primary("★", Message::ToggleDarkMode),
+                icon_button::secondary("♥", Message::ToggleDarkMode),
+                icon_button::outlined("✎", Message::ToggleDarkMode),
+                icon_button::text_icon("✕", Message::ToggleDarkMode),
+            ]
+            .spacing(8)
+            .into(),
+        );
+
+        let fab_section = section(
+            "Fab",
+            iced::widget::row![
+                fab::primary("+", Message::ToggleDarkMode),
+                fab::secondary("✎", Message::ToggleDarkMode),
+                fab::extended("+", "Create", Message::ToggleDarkMode),
+            ]
+            .spacing(16)
+            .align_y(iced::alignment::Vertical::Center)
+            .into(),
+        );
+
+        let alert_section = section(
+            "Alert",
+            if self.alert_dismissed {
+                iced::widget::column![iced::widget::text("Alert dismissed.")].into()
+            } else {
+                iced::widget::column![
+                    alert::success("Your changes have been saved.", None::<Message>),
+                    alert::info("A new version is available.", None::<Message>),
+                    alert::warning("Your session will expire soon.", None::<Message>),
+                    alert::with_title(
+                        alert::Severity::Error,
+                        "Something went wrong",
+                        "Please try again.",
+                        Some(Message::AlertDismissed),
+                    ),
+                ]
+                .spacing(8)
+                .into()
+            },
+        );
+
+        let accordion_section = section(
+            "Accordion",
+            accordion::accordion(
+                "Click to expand",
+                iced::widget::text("Hidden content revealed when expanded."),
+                self.accordion_expanded,
+                Message::AccordionToggled,
+            )
+            .into(),
+        );
+
+        let breadcrumbs_section = section(
+            "Breadcrumbs",
+            iced::widget::column![
+                breadcrumbs::breadcrumbs(&BREADCRUMB_ITEMS, Message::BreadcrumbSelected),
+                iced::widget::text(match self.last_breadcrumb {
+                    Some(i) => format!("Last clicked: {}", BREADCRUMB_ITEMS[i]),
+                    None => "Nothing clicked yet".to_string(),
+                }),
+            ]
+            .spacing(8)
+            .into(),
+        );
+
+        let pagination_section = section(
+            "Pagination",
+            pagination::pagination(self.current_page, 10, Message::PageSelected).into(),
+        );
+
+        let skeleton_section = section(
+            "Skeleton",
+            iced::widget::row![
+                skeleton::text(120.0),
+                skeleton::rectangular(80.0, 48.0),
+                skeleton::circular(48.0),
+            ]
+            .spacing(16)
+            .align_y(iced::alignment::Vertical::Center)
+            .into(),
+        );
+
+        let stepper_section = section(
+            "Stepper",
+            stepper::stepper(&["Account", "Shipping", "Payment", "Review"], self.active_tab.min(3)).into(),
+        );
+
+        let rating_section = section(
+            "Rating",
+            iced::widget::row![
+                rating::rating(self.rating_value, 5, Message::RatingChanged),
+                iced::widget::text(format!("{}/5", self.rating_value)),
+            ]
+            .spacing(12)
+            .align_y(iced::alignment::Vertical::Center)
+            .into(),
+        );
+
+        let table_section = section(
+            "Table",
+            table::table(
+                &["Name", "Role", "Status"],
+                &[
+                    vec!["Ada".to_string(), "Engineer".to_string(), "Active".to_string()],
+                    vec!["Grace".to_string(), "Designer".to_string(), "Active".to_string()],
+                    vec!["Alan".to_string(), "Researcher".to_string(), "Away".to_string()],
+                ],
+            )
+            .into(),
+        );
+
+        let layout_section = section(
+            "Grid & Stack",
+            iced::widget::column![
+                layout::stack(
+                    &theme,
+                    layout::Direction::Row,
+                    1.0,
+                    vec![
+                        iced::widget::text("Stack item A").into(),
+                        iced::widget::text("Stack item B").into(),
+                        iced::widget::text("Stack item C").into(),
+                    ],
+                ),
+                Element::from(layout::grid(
+                    &theme,
+                    3,
+                    1.0,
+                    vec![
+                        card::outlined(iced::widget::text("1")).into(),
+                        card::outlined(iced::widget::text("2")).into(),
+                        card::outlined(iced::widget::text("3")).into(),
+                        card::outlined(iced::widget::text("4")).into(),
+                    ],
+                )),
+            ]
+            .spacing(12)
+            .into(),
+        );
+
+        let autocomplete_section = section(
+            "Autocomplete",
+            iced::widget::column![
+                autocomplete::autocomplete(
+                    "Search fruit…",
+                    &self.autocomplete_query,
+                    &self
+                        .autocomplete_matches()
+                        .into_iter()
+                        .map(str::to_string)
+                        .collect::<Vec<_>>(),
+                    Message::AutocompleteChanged,
+                    Message::AutocompleteSelected,
+                ),
+                iced::widget::text(match &self.autocomplete_selected {
+                    Some(name) => format!("Selected: {name}"),
+                    None => "Nothing selected yet".to_string(),
+                }),
+            ]
+            .spacing(8)
+            .into(),
+        );
+
+        let timeline_section = section(
+            "Timeline",
+            timeline::timeline(vec![
+                timeline::TimelineItem::new("Order placed", "Your order has been received."),
+                timeline::TimelineItem::new("Shipped", "Your order is on its way."),
+                timeline::TimelineItem::new("Delivered", "Your order has arrived."),
+            ])
+            .into(),
+        );
+
+        let drawer_backdrop_section = section(
+            "Drawer & Backdrop",
+            iced::widget::row![
+                button::primary("Open drawer", Message::OpenDrawer),
+                button::secondary("Open backdrop", Message::OpenBackdrop),
+            ]
+            .spacing(8)
+            .into(),
+        );
+
+        let speed_dial_section = section(
+            "Speed Dial",
+            speed_dial::speed_dial(
+                "+",
+                self.speed_dial_open,
+                vec![
+                    speed_dial::SpeedDialAction::new("✎", Message::SpeedDialAction("Edit")),
+                    speed_dial::SpeedDialAction::new("♥", Message::SpeedDialAction("Favorite")),
+                    speed_dial::SpeedDialAction::new("✕", Message::SpeedDialAction("Delete")),
+                ],
+                Message::SpeedDialToggled,
+            )
+            .into(),
+        );
+
         let content = iced::widget::scrollable(
             iced::widget::column![
                 buttons_section,
+                icon_button_section,
+                fab_section,
+                alert_section,
                 text_field_section,
                 checkbox_section,
                 radio_section,
                 switch_section,
                 slider_section,
                 select_section,
+                autocomplete_section,
                 divider_section,
                 tooltip_section,
                 card_section,
@@ -335,10 +614,21 @@ impl Gallery {
                 avatar_section,
                 badge_section,
                 list_section,
+                table_section,
                 progress_section,
+                skeleton_section,
                 tabs_section,
+                stepper_section,
+                accordion_section,
+                breadcrumbs_section,
+                pagination_section,
+                rating_section,
+                timeline_section,
+                layout_section,
                 menu_section,
                 dialog_snackbar_section,
+                drawer_backdrop_section,
+                speed_dial_section,
             ]
             .spacing(20)
             .padding(20),
@@ -357,11 +647,40 @@ impl Gallery {
             ],
         );
 
-        snackbar::snackbar(
+        let with_snackbar = snackbar::snackbar(
             with_dialog,
             self.snackbar_visible,
             "Action completed successfully",
             Message::DismissSnackbar,
+        );
+
+        let with_drawer = drawer::drawer(
+            with_snackbar,
+            self.drawer_open,
+            drawer::Anchor::Left,
+            iced::widget::column![
+                iced::widget::text("Navigation").size(18),
+                divider::horizontal(1),
+                iced::widget::text("Dashboard"),
+                iced::widget::text("Settings"),
+                iced::widget::text("Logout"),
+            ]
+            .spacing(12),
+            Message::CloseDrawer,
+        );
+
+        backdrop::backdrop(
+            with_drawer,
+            self.backdrop_open,
+            Some(
+                iced::widget::column![
+                    iced::widget::text("Loading…").size(16),
+                    button::text_button("Close", Message::CloseBackdrop),
+                ]
+                .spacing(12)
+                .align_x(iced::alignment::Horizontal::Center)
+                .into(),
+            ),
         )
     }
 }

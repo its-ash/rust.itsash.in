@@ -30,8 +30,10 @@ pub use theme::RustTheme;
 // `rustheme::button::primary(...)`, `rustheme::card::elevated(...)`, etc.
 // without reaching through `rustheme::components::`.
 pub use components::{
-    app_bar, avatar, badge, button, card, checkbox, chip, dialog, divider, list, menu, progress,
-    radio, select, slider, snackbar, switch, tabs, text_field, tooltip,
+    accordion, alert, app_bar, autocomplete, avatar, backdrop, badge, breadcrumbs, button, card,
+    checkbox, chip, dialog, divider, drawer, fab, icon_button, layout, list, menu, pagination,
+    progress, radio, rating, select, skeleton, slider, snackbar, speed_dial, stepper, switch,
+    table, tabs, text_field, timeline, tooltip,
 };
 
 /// The commonly-needed imports for building a RustTheme-styled iced view:
@@ -39,8 +41,10 @@ pub use components::{
 pub mod prelude {
     pub use crate::theme::RustTheme;
     pub use crate::{
-        app_bar, avatar, badge, button, card, checkbox, chip, dialog, divider, list, menu,
-        progress, radio, select, slider, snackbar, switch, tabs, text_field, tooltip,
+        accordion, alert, app_bar, autocomplete, avatar, backdrop, badge, breadcrumbs, button,
+        card, checkbox, chip, dialog, divider, drawer, fab, icon_button, layout, list, menu,
+        pagination, progress, radio, rating, select, skeleton, slider, snackbar, speed_dial,
+        stepper, switch, table, tabs, text_field, timeline, tooltip,
     };
     pub use iced::Element;
 }
