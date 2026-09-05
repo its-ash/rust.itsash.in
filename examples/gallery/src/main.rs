@@ -5,6 +5,15 @@ use rustheme::prelude::*;
 use rustheme_core::{system_font, system_monospace_font, FontWeight};
 
 fn main() -> iced::Result {
+    // Configuring a custom global font is done once, here, before any UI is
+    // built — see `RustTheme::builder()`'s docs for why font is process-wide
+    // while the palette stays per-`RustTheme`-instance. Left as the default
+    // system font for this gallery; uncomment to try a custom one (the named
+    // font must be installed on the system, since RustTheme doesn't bundle
+    // font files):
+    //
+    // let _ = RustTheme::builder().font("Inter").build();
+
     iced::application(Gallery::title, Gallery::update, Gallery::view)
         .theme(Gallery::theme)
         .run()

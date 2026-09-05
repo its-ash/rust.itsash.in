@@ -63,6 +63,119 @@ pub struct Palette {
 }
 
 impl Palette {
+    /// The RustTheme brand palette, built from the project's 5 core colors:
+    /// `--graphite` (#353535), `--stormy-teal` (#3c6e71), `--white`
+    /// (#ffffff), `--alabaster-grey` (#d9d9d9), `--yale-blue` (#284b63).
+    /// Yale blue is the primary brand/action color, stormy teal the
+    /// secondary/accent color, graphite the primary text and dark-mode
+    /// paper surface, white/alabaster grey the light-mode surfaces.
+    /// Error/warning/info/success aren't part of the given brand colors, so
+    /// they keep the existing Material 3 -style semantic colors.
+    pub fn brand_light() -> Self {
+        Self {
+            primary: ColorSet {
+                main: hex("#284b63"),
+                light: hex("#3d6c8c"),
+                dark: hex("#1b3345"),
+                contrast_text: hex("#ffffff"),
+            },
+            secondary: ColorSet {
+                main: hex("#3c6e71"),
+                light: hex("#5a9295"),
+                dark: hex("#294c4e"),
+                contrast_text: hex("#ffffff"),
+            },
+            error: ColorSet {
+                main: hex("#ba1a1a"),
+                light: hex("#ff5449"),
+                dark: hex("#93000a"),
+                contrast_text: hex("#ffffff"),
+            },
+            warning: ColorSet {
+                main: hex("#f9a825"),
+                light: hex("#ffd95a"),
+                dark: hex("#c17900"),
+                contrast_text: hex("#3e2723"),
+            },
+            info: ColorSet {
+                main: hex("#0061a4"),
+                light: hex("#5eb3ff"),
+                dark: hex("#00447c"),
+                contrast_text: hex("#ffffff"),
+            },
+            success: ColorSet {
+                main: hex("#2e7d32"),
+                light: hex("#60ad5e"),
+                dark: hex("#005005"),
+                contrast_text: hex("#ffffff"),
+            },
+            background: BackgroundColors {
+                default: hex("#d9d9d9"),
+                paper: hex("#ffffff"),
+            },
+            text: TextColors {
+                primary: hex("#353535"),
+                secondary: hex("#5c5c5c"),
+                disabled: hex("#8a8a8a"),
+            },
+            divider: hex("#d9d9d9"),
+        }
+    }
+
+    /// The RustTheme brand palette in dark mode: graphite becomes the paper
+    /// surface, white becomes the primary text, and the brand hues lighten
+    /// so they stay vivid and readable against the dark surfaces.
+    pub fn brand_dark() -> Self {
+        Self {
+            primary: ColorSet {
+                main: hex("#5b8bab"),
+                light: hex("#8db3cc"),
+                dark: hex("#3d6c8c"),
+                contrast_text: hex("#0d1b24"),
+            },
+            secondary: ColorSet {
+                main: hex("#5a9295"),
+                light: hex("#8ebcbe"),
+                dark: hex("#3c6e71"),
+                contrast_text: hex("#0c1f20"),
+            },
+            error: ColorSet {
+                main: hex("#ffb4ab"),
+                light: hex("#ffdad6"),
+                dark: hex("#ff5449"),
+                contrast_text: hex("#690005"),
+            },
+            warning: ColorSet {
+                main: hex("#ffd95a"),
+                light: hex("#ffe999"),
+                dark: hex("#f9a825"),
+                contrast_text: hex("#402d00"),
+            },
+            info: ColorSet {
+                main: hex("#9fcaff"),
+                light: hex("#d1e4ff"),
+                dark: hex("#5eb3ff"),
+                contrast_text: hex("#003258"),
+            },
+            success: ColorSet {
+                main: hex("#8bd689"),
+                light: hex("#c2f2c0"),
+                dark: hex("#4ca84a"),
+                contrast_text: hex("#00390a"),
+            },
+            background: BackgroundColors {
+                default: hex("#252525"),
+                paper: hex("#353535"),
+            },
+            text: TextColors {
+                primary: hex("#ffffff"),
+                secondary: hex("#d9d9d9"),
+                disabled: hex("#8a8a8a"),
+            },
+            divider: hex("#4a4a4a"),
+        }
+    }
+
     /// A modern, vibrant Material 3 -inspired light palette: dark text on
     /// light/white surfaces, and white text on saturated color fills.
     pub fn light() -> Self {
@@ -173,6 +286,6 @@ impl Palette {
 
 impl Default for Palette {
     fn default() -> Self {
-        Self::light()
+        Self::brand_light()
     }
 }

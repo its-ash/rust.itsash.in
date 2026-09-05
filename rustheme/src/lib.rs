@@ -24,7 +24,7 @@ pub mod components;
 pub mod style;
 pub mod theme;
 
-pub use theme::RustTheme;
+pub use theme::{FontFamily, Palette, RustTheme, RustThemeBuilder};
 
 // Flattened re-exports of every component module, so callers can write
 // `rustheme::button::primary(...)`, `rustheme::card::elevated(...)`, etc.
@@ -39,7 +39,7 @@ pub use components::{
 /// The commonly-needed imports for building a RustTheme-styled iced view:
 /// the theme type, every component module, and iced's own `Element`.
 pub mod prelude {
-    pub use crate::theme::RustTheme;
+    pub use crate::theme::{FontFamily, Palette, RustTheme, RustThemeBuilder};
     pub use crate::{
         accordion, alert, app_bar, autocomplete, avatar, backdrop, badge, breadcrumbs, button,
         card, checkbox, chip, dialog, divider, drawer, fab, icon_button, layout, list, menu,

@@ -57,6 +57,41 @@ Run the full showcase:
 cargo run -p gallery
 ```
 
+## Configuring the theme
+
+`RustTheme::light()` / `RustTheme::dark()` use RustTheme's own brand palette
+by default (built from `--yale-blue`, `--stormy-teal`, `--graphite`,
+`--alabaster-grey`, `--white`). To customize the palette and/or font
+globally, build a `RustTheme` through `RustTheme::builder()` once at
+startup:
+
+```rust
+use rustheme::prelude::*;
+
+fn main() {
+    // The palette is per-instance: build as many custom RustThemes as you
+    // like (e.g. a light and dark variant of your own brand).
+    let theme = RustTheme::builder()
+        .palette(Palette::brand_dark()) // or your own `Palette { .. }`
+        .font("Inter")                  // must be installed on the system
+        .monospace_font("Fira Code")
+        .build();
+
+    // ...pass `theme` (or a closure returning it) to `iced::application`.
+    let _ = theme;
+}
+```
+
+The font family is set **process-wide** rather than per-`RustTheme`, and
+should only be configured on the first `RustTheme` you build, before
+constructing any UI: iced applies fonts at widget-construction time, not
+lazily per theme instance the way it does for colors, so there's no way to
+vary the font per-`RustTheme`-instance without threading a theme reference
+through every component call. If you skip `.font(...)`, RustTheme falls back
+to the OS-native system font per platform (SF Pro Text / Segoe UI /
+Cantarell) — see `rustheme_core::set_global_font_family` for the underlying
+mechanism.
+
 ## Components
 
 | Component   | Variants                                              |

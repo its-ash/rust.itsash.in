@@ -1,3 +1,4 @@
+use std::sync::OnceLock;
 use iced_core::{font, Font};
 
 /// Font weight, simplified to the values RustTheme's default scale uses.
@@ -45,23 +46,79 @@ pub const SYSTEM_MONOSPACE_FONT_NAME: &str = "Source Code Pro";
 #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
 pub const SYSTEM_MONOSPACE_FONT_NAME: &str = "Courier New";
 
-/// Builds the platform system UI [`Font`] at the given `weight`. Text
-/// widgets should call `.font(...)` with this (via [`crate::Typography`]'s
-/// helpers) rather than relying on iced's generic default font, which is
-/// what makes RustTheme apps read as "web-styled" instead of native.
+/// A font family: either the platform's native system font, or a specific
+/// named family (e.g. a font the host application bundles/registers with
+/// iced itself). Iced applies fonts by name at widget-construction time
+/// rather than lazily through the `Catalog` styling system that colors use,
+/// so there is no per-`RustTheme`-instance way to vary the font without
+/// threading a theme reference through every component builder. Instead,
+/// the *process-wide* default family is configured once via
+/// [`set_global_font_family`] — typically in `main()`, before building any
+/// UI — and every component reads it through [`system_font`] /
+/// [`system_monospace_font`].
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FontFamily {
+    /// The OS-native UI font ([`SYSTEM_FONT_NAME`] for the current platform).
+    System,
+    /// A specific named font family.
+    Named(&'static str),
+}
+
+impl FontFamily {
+    fn to_iced(self) -> font::Family {
+        match self {
+            Self::System => font::Family::Name(SYSTEM_FONT_NAME),
+            Self::Named(name) => font::Family::Name(name),
+        }
+    }
+}
+
+static GLOBAL_UI_FONT: OnceLock<FontFamily> = OnceLock::new();
+static GLOBAL_MONO_FONT: OnceLock<FontFamily> = OnceLock::new();
+
+/// Sets the process-wide default UI font family used by every RustTheme
+/// component from this point on. Call this once, before building any UI
+/// (e.g. at the top of `main()`) — it has no effect if called again after
+/// the first call (or after any component has already read the default).
+///
+/// ```no_run
+/// use rustheme_core::{set_global_font_family, FontFamily};
+///
+/// set_global_font_family(FontFamily::Named("Inter"));
+/// ```
+pub fn set_global_font_family(family: FontFamily) {
+    let _ = GLOBAL_UI_FONT.set(family);
+}
+
+/// Sets the process-wide default monospace font family (used for tabular
+/// numerals, code, and other fixed-width content). Same one-shot,
+/// call-before-building-UI semantics as [`set_global_font_family`].
+pub fn set_global_monospace_font_family(family: FontFamily) {
+    let _ = GLOBAL_MONO_FONT.set(family);
+}
+
+/// Builds the current default UI [`Font`] at the given `weight`: the family
+/// set via [`set_global_font_family`], or the platform system font if none
+/// was configured. Text widgets should call `.font(...)` with this (via
+/// [`Typography`]'s helpers) rather than relying on iced's generic default
+/// font, which is what makes RustTheme apps read as "web-styled" instead of
+/// native.
 pub fn system_font(weight: FontWeight) -> Font {
+    let family = GLOBAL_UI_FONT.get().copied().unwrap_or(FontFamily::System);
     Font {
-        family: font::Family::Name(SYSTEM_FONT_NAME),
+        family: family.to_iced(),
         weight: weight.to_iced(),
         ..Font::DEFAULT
     }
 }
 
-/// Builds the platform system monospace [`Font`] at the given `weight`, for
-/// tabular/numeric or code-like content.
+/// Builds the current default monospace [`Font`] at the given `weight`: the
+/// family set via [`set_global_monospace_font_family`], or the platform
+/// system monospace font if none was configured.
 pub fn system_monospace_font(weight: FontWeight) -> Font {
+    let family = GLOBAL_MONO_FONT.get().copied().unwrap_or(FontFamily::System);
     Font {
-        family: font::Family::Name(SYSTEM_MONOSPACE_FONT_NAME),
+        family: family.to_iced(),
         weight: weight.to_iced(),
         ..Font::MONOSPACE
     }
