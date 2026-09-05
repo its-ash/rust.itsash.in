@@ -108,7 +108,7 @@ mechanism.
 | Card        | card, elevated, outlined                                 |
 | Chip        | filled, outlined                                         |
 | Avatar      | initials                                                 |
-| Badge       | count, dot                                               |
+| Badge       | count, dot, standard; any semantic color; 4 corner positions |
 | List        | list, item                                               |
 | Progress    | linear, circular                                         |
 | AppBar      | app_bar                                                  |

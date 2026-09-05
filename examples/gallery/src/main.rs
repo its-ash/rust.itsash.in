@@ -333,11 +333,42 @@ impl Gallery {
 
         let badge_section = section(
             "Badge",
-            iced::widget::row![
-                badge::count(iced::widget::text("Inbox").font(system_font(FontWeight::Regular)), 7),
-                badge::dot(iced::widget::text("Alerts").font(system_font(FontWeight::Regular))),
+            iced::widget::column![
+                iced::widget::row![
+                    badge::count(
+                        icon_button::outlined("✉", Message::ToggleDarkMode),
+                        7,
+                        99,
+                        badge::Color::Error,
+                        badge::Position::TopRight,
+                    ),
+                    badge::count(
+                        icon_button::outlined("✉", Message::ToggleDarkMode),
+                        128,
+                        99,
+                        badge::Color::Primary,
+                        badge::Position::TopLeft,
+                    ),
+                    badge::dot(
+                        icon_button::outlined("♥", Message::ToggleDarkMode),
+                        badge::Color::Success,
+                        badge::Position::BottomRight,
+                    ),
+                    badge::dot(
+                        icon_button::outlined("🔔", Message::ToggleDarkMode),
+                        badge::Color::Warning,
+                        badge::Position::BottomLeft,
+                    ),
+                ]
+                .spacing(24)
+                .align_y(iced::alignment::Vertical::Center),
+                iced::widget::row![
+                    badge::standard("New", badge::Color::Info),
+                    badge::standard("Beta", badge::Color::Secondary),
+                ]
+                .spacing(8),
             ]
-            .spacing(24)
+            .spacing(16)
             .into(),
         );
 
