@@ -2,6 +2,7 @@
 //! `rustheme` crate, with a light/dark theme toggle in the app bar.
 
 use rustheme::prelude::*;
+use rustheme_core::{system_font, system_monospace_font, FontWeight};
 
 fn main() -> iced::Result {
     iced::application(Gallery::title, Gallery::update, Gallery::view)
@@ -217,7 +218,7 @@ impl Gallery {
         ) -> iced::widget::Container<'a, Message, RustTheme> {
             card::card(
                 iced::widget::column![
-                    iced::widget::text(title.to_string()).size(18),
+                    iced::widget::text(title.to_string()).size(18).font(system_font(FontWeight::Bold)),
                     content,
                 ]
                 .spacing(12),
@@ -274,7 +275,7 @@ impl Gallery {
             "Slider",
             iced::widget::column![
                 slider::slider(0.0..=100.0, self.slider_value, Message::SliderChanged),
-                iced::widget::text(format!("{:.0}", self.slider_value)),
+                iced::widget::text(format!("{:.0}", self.slider_value)).font(system_monospace_font(FontWeight::Regular)),
             ]
             .spacing(6)
             .into(),
@@ -288,9 +289,9 @@ impl Gallery {
         let divider_section = section(
             "Divider",
             iced::widget::column![
-                iced::widget::text("Above"),
+                iced::widget::text("Above").font(system_font(FontWeight::Regular)),
                 divider::horizontal(1),
-                iced::widget::text("Below"),
+                iced::widget::text("Below").font(system_font(FontWeight::Regular)),
             ]
             .spacing(8)
             .into(),
@@ -304,9 +305,9 @@ impl Gallery {
         let card_section = section(
             "Cards",
             iced::widget::row![
-                card::card(iced::widget::text("Card")).width(iced::Length::Fill),
-                card::elevated(iced::widget::text("Elevated")).width(iced::Length::Fill),
-                card::outlined(iced::widget::text("Outlined")).width(iced::Length::Fill),
+                card::card(iced::widget::text("Card").font(system_font(FontWeight::Regular))).width(iced::Length::Fill),
+                card::elevated(iced::widget::text("Elevated").font(system_font(FontWeight::Regular))).width(iced::Length::Fill),
+                card::outlined(iced::widget::text("Outlined").font(system_font(FontWeight::Regular))).width(iced::Length::Fill),
             ]
             .spacing(12)
             .into(),
@@ -324,8 +325,8 @@ impl Gallery {
         let badge_section = section(
             "Badge",
             iced::widget::row![
-                badge::count(iced::widget::text("Inbox"), 7),
-                badge::dot(iced::widget::text("Alerts")),
+                badge::count(iced::widget::text("Inbox").font(system_font(FontWeight::Regular)), 7),
+                badge::dot(iced::widget::text("Alerts").font(system_font(FontWeight::Regular))),
             ]
             .spacing(24)
             .into(),
@@ -334,9 +335,9 @@ impl Gallery {
         let list_section = section(
             "List",
             list::list(vec![
-                list::item(iced::widget::text("Item one")).into(),
-                list::item(iced::widget::text("Item two")).into(),
-                list::item(iced::widget::text("Item three")).into(),
+                list::item(iced::widget::text("Item one").font(system_font(FontWeight::Regular))).into(),
+                list::item(iced::widget::text("Item two").font(system_font(FontWeight::Regular))).into(),
+                list::item(iced::widget::text("Item three").font(system_font(FontWeight::Regular))).into(),
             ])
             .into(),
         );
@@ -356,7 +357,7 @@ impl Gallery {
             "Tabs",
             iced::widget::column![
                 tabs::tabs(&TAB_LABELS, self.active_tab, Message::TabSelected),
-                iced::widget::text(format!("Active tab: {}", TAB_LABELS[self.active_tab])),
+                iced::widget::text(format!("Active tab: {}", TAB_LABELS[self.active_tab])).font(system_font(FontWeight::Regular)),
             ]
             .spacing(8)
             .into(),
@@ -376,7 +377,7 @@ impl Gallery {
                     Message::MenuItemSelected,
                     Message::CloseMenu,
                 ),
-                iced::widget::text(menu_status),
+                iced::widget::text(menu_status).font(system_font(FontWeight::Regular)),
             ]
             .spacing(8)
             .into(),
@@ -419,7 +420,7 @@ impl Gallery {
         let alert_section = section(
             "Alert",
             if self.alert_dismissed {
-                iced::widget::column![iced::widget::text("Alert dismissed.")].into()
+                iced::widget::column![iced::widget::text("Alert dismissed.").font(system_font(FontWeight::Regular))].into()
             } else {
                 iced::widget::column![
                     alert::success("Your changes have been saved.", None::<Message>),
@@ -441,7 +442,7 @@ impl Gallery {
             "Accordion",
             accordion::accordion(
                 "Click to expand",
-                iced::widget::text("Hidden content revealed when expanded."),
+                iced::widget::text("Hidden content revealed when expanded.").font(system_font(FontWeight::Regular)),
                 self.accordion_expanded,
                 Message::AccordionToggled,
             )
@@ -455,7 +456,7 @@ impl Gallery {
                 iced::widget::text(match self.last_breadcrumb {
                     Some(i) => format!("Last clicked: {}", BREADCRUMB_ITEMS[i]),
                     None => "Nothing clicked yet".to_string(),
-                }),
+                }).font(system_font(FontWeight::Regular)),
             ]
             .spacing(8)
             .into(),
@@ -487,7 +488,7 @@ impl Gallery {
             "Rating",
             iced::widget::row![
                 rating::rating(self.rating_value, 5, Message::RatingChanged),
-                iced::widget::text(format!("{}/5", self.rating_value)),
+                iced::widget::text(format!("{}/5", self.rating_value)).font(system_monospace_font(FontWeight::Regular)),
             ]
             .spacing(12)
             .align_y(iced::alignment::Vertical::Center)
@@ -515,9 +516,9 @@ impl Gallery {
                     layout::Direction::Row,
                     1.0,
                     vec![
-                        iced::widget::text("Stack item A").into(),
-                        iced::widget::text("Stack item B").into(),
-                        iced::widget::text("Stack item C").into(),
+                        iced::widget::text("Stack item A").font(system_font(FontWeight::Regular)).into(),
+                        iced::widget::text("Stack item B").font(system_font(FontWeight::Regular)).into(),
+                        iced::widget::text("Stack item C").font(system_font(FontWeight::Regular)).into(),
                     ],
                 ),
                 Element::from(layout::grid(
@@ -525,10 +526,10 @@ impl Gallery {
                     3,
                     1.0,
                     vec![
-                        card::outlined(iced::widget::text("1")).into(),
-                        card::outlined(iced::widget::text("2")).into(),
-                        card::outlined(iced::widget::text("3")).into(),
-                        card::outlined(iced::widget::text("4")).into(),
+                        card::outlined(iced::widget::text("1").font(system_font(FontWeight::Regular))).into(),
+                        card::outlined(iced::widget::text("2").font(system_font(FontWeight::Regular))).into(),
+                        card::outlined(iced::widget::text("3").font(system_font(FontWeight::Regular))).into(),
+                        card::outlined(iced::widget::text("4").font(system_font(FontWeight::Regular))).into(),
                     ],
                 )),
             ]
@@ -553,7 +554,7 @@ impl Gallery {
                 iced::widget::text(match &self.autocomplete_selected {
                     Some(name) => format!("Selected: {name}"),
                     None => "Nothing selected yet".to_string(),
-                }),
+                }).font(system_font(FontWeight::Regular)),
             ]
             .spacing(8)
             .into(),
@@ -640,7 +641,7 @@ impl Gallery {
             base,
             self.dialog_open,
             "Confirm action",
-            iced::widget::text("Are you sure you want to proceed?"),
+            iced::widget::text("Are you sure you want to proceed?").font(system_font(FontWeight::Regular)),
             vec![
                 button::text_button("Cancel", Message::CloseDialog).into(),
                 button::primary("Confirm", Message::CloseDialog).into(),
@@ -659,11 +660,11 @@ impl Gallery {
             self.drawer_open,
             drawer::Anchor::Left,
             iced::widget::column![
-                iced::widget::text("Navigation").size(18),
+                iced::widget::text("Navigation").size(18).font(system_font(FontWeight::Bold)),
                 divider::horizontal(1),
-                iced::widget::text("Dashboard"),
-                iced::widget::text("Settings"),
-                iced::widget::text("Logout"),
+                iced::widget::text("Dashboard").font(system_font(FontWeight::Regular)),
+                iced::widget::text("Settings").font(system_font(FontWeight::Regular)),
+                iced::widget::text("Logout").font(system_font(FontWeight::Regular)),
             ]
             .spacing(12),
             Message::CloseDrawer,
@@ -674,7 +675,7 @@ impl Gallery {
             self.backdrop_open,
             Some(
                 iced::widget::column![
-                    iced::widget::text("Loading…").size(16),
+                    iced::widget::text("Loading…").size(16).font(system_font(FontWeight::Regular)),
                     button::text_button("Close", Message::CloseBackdrop),
                 ]
                 .spacing(12)

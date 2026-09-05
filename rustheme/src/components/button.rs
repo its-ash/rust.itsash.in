@@ -4,12 +4,13 @@
 use iced::widget::button::Button;
 use iced::widget::text;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 fn base<'a, Message>(label: impl text::IntoFragment<'a>) -> Button<'a, Message, RustTheme>
 where
     Message: Clone + 'a,
 {
-    iced::widget::button(iced::widget::text(label)).padding([8, 16])
+    iced::widget::button(iced::widget::text(label).font(system_font(FontWeight::Medium))).padding([8, 16])
 }
 
 /// A primary, filled button — the main call to action.

@@ -15,6 +15,7 @@
 pub mod tokens;
 
 pub use tokens::{
-    hex, BackgroundColors, ColorSet, FontWeight, Palette, Shape, Spacing, TextColors, TypeScale,
-    TypeStyle, Typography,
+    hex, system_font, system_monospace_font, BackgroundColors, ColorSet, FontWeight, Palette,
+    Shape, Spacing, TextColors, TypeScale, TypeStyle, Typography, SYSTEM_FONT_NAME,
+    SYSTEM_MONOSPACE_FONT_NAME,
 };

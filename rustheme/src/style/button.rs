@@ -23,7 +23,7 @@ fn from_color_set(set: ColorSet, radius: f32, status: Status) -> Style {
         Status::Pressed => Style {
             background: Some(Background::Color(set.dark)),
             shadow: Shadow {
-                color: Color::BLACK,
+                color: Color { a: 0.15, ..Color::BLACK },
                 offset: iced::Vector::new(0.0, 1.0),
                 blur_radius: 2.0,
             },

@@ -3,6 +3,7 @@
 
 use iced::widget::Row;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 fn step_circle<'a, Message>(index: usize, is_active: bool, is_completed: bool) -> iced::widget::Container<'a, Message, RustTheme>
 where
@@ -12,6 +13,7 @@ where
     iced::widget::container(
         iced::widget::text(label)
             .size(13)
+            .font(system_font(FontWeight::Medium))
             .align_x(iced::alignment::Horizontal::Center)
             .align_y(iced::alignment::Vertical::Center),
     )
@@ -50,7 +52,7 @@ where
 
         let step = iced::widget::column![
             step_circle(i, is_active, is_completed),
-            iced::widget::text(*label).size(12),
+            iced::widget::text(*label).size(12).font(system_font(FontWeight::Regular)),
         ]
         .spacing(4)
         .align_x(iced::alignment::Horizontal::Center);

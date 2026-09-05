@@ -2,6 +2,7 @@
 
 use iced::widget::Container;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// A circular avatar showing up to two initial characters.
 pub fn initials<'a, Message>(initials: impl Into<String>, diameter: f32) -> Container<'a, Message, RustTheme>
@@ -12,6 +13,7 @@ where
     iced::widget::container(
         iced::widget::text(initials)
             .size(diameter * 0.4)
+            .font(system_font(FontWeight::Medium))
             .align_x(iced::alignment::Horizontal::Center)
             .align_y(iced::alignment::Vertical::Center),
     )

@@ -9,6 +9,7 @@
 
 use iced::widget::Column;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// An autocomplete field: a text input plus a dropdown of `suggestions`
 /// shown when non-empty. `on_input` fires as the query changes; `on_select`
@@ -35,7 +36,7 @@ where
         for (i, suggestion) in suggestions.iter().enumerate() {
             let message = on_select(i);
             list = list.push(
-                iced::widget::button(iced::widget::text(suggestion.clone()).size(14))
+                iced::widget::button(iced::widget::text(suggestion.clone()).size(14).font(system_font(FontWeight::Regular)))
                     .width(iced::Length::Fill)
                     .padding([8, 12])
                     .on_press(message)

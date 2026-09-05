@@ -7,6 +7,7 @@
 use iced::widget::Column;
 use iced::Element;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// An accordion section. `is_expanded` controls whether `body` renders;
 /// clicking the header fires `on_toggle`.
@@ -22,9 +23,9 @@ where
     let chevron = if is_expanded { "⌄" } else { "›" };
     let header = iced::widget::button(
         iced::widget::row![
-            iced::widget::text(title.into()).size(15),
+            iced::widget::text(title.into()).size(15).font(system_font(FontWeight::Medium)),
             iced::widget::horizontal_space(),
-            iced::widget::text(chevron).size(15),
+            iced::widget::text(chevron).size(15).font(system_font(FontWeight::Regular)),
         ]
         .align_y(iced::alignment::Vertical::Center),
     )

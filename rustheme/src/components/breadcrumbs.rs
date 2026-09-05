@@ -3,6 +3,7 @@
 
 use iced::widget::Row;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// A breadcrumb trail. `items` are the segment labels in order; `on_select`
 /// maps a clicked segment index to a `Message`. The final segment is
@@ -20,13 +21,13 @@ where
     for (i, label) in items.iter().enumerate() {
         let is_last = i + 1 == len;
         if is_last {
-            row = row.push(iced::widget::text(*label).size(14).style(|theme: &RustTheme| iced::widget::text::Style {
+            row = row.push(iced::widget::text(*label).size(14).font(system_font(FontWeight::Regular)).style(|theme: &RustTheme| iced::widget::text::Style {
                 color: Some(theme.palette.text.primary),
             }));
         } else {
             let message = on_select(i);
             row = row.push(
-                iced::widget::button(iced::widget::text(*label).size(14))
+                iced::widget::button(iced::widget::text(*label).size(14).font(system_font(FontWeight::Regular)))
                     .padding(0)
                     .on_press(message)
                     .style(|theme: &RustTheme, status| {
@@ -45,7 +46,7 @@ where
                         }
                     }),
             );
-            row = row.push(iced::widget::text("›").size(14).style(|theme: &RustTheme| iced::widget::text::Style {
+            row = row.push(iced::widget::text("›").size(14).font(system_font(FontWeight::Regular)).style(|theme: &RustTheme| iced::widget::text::Style {
                 color: Some(theme.palette.text.disabled),
             }));
         }

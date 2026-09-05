@@ -5,6 +5,7 @@
 use iced::widget::Container;
 use iced::Length;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// The four MUI alert severities.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -26,9 +27,9 @@ where
 {
     let mut text_col = iced::widget::column![].spacing(4);
     if let Some(title) = title {
-        text_col = text_col.push(iced::widget::text(title).size(15));
+        text_col = text_col.push(iced::widget::text(title).size(15).font(system_font(FontWeight::Medium)));
     }
-    text_col = text_col.push(iced::widget::text(body.into()).size(14));
+    text_col = text_col.push(iced::widget::text(body.into()).size(14).font(system_font(FontWeight::Regular)));
 
     let mut row = iced::widget::row![text_col.width(Length::Fill)]
         .spacing(12)
@@ -36,7 +37,7 @@ where
 
     if let Some(on_dismiss) = on_dismiss {
         row = row.push(
-            iced::widget::button(iced::widget::text("✕").size(14))
+            iced::widget::button(iced::widget::text("✕").size(14).font(system_font(FontWeight::Regular)))
                 .padding(4)
                 .on_press(on_dismiss)
                 .style(move |theme: &RustTheme, status| {

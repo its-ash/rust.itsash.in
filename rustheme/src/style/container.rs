@@ -19,25 +19,22 @@ pub fn paper() -> StyleFn<'static, RustTheme> {
     })
 }
 
-/// A card surface with a subtle shadow, MUI `Card` default elevation.
+/// A card surface: flat, with a thin native-style separator border instead
+/// of a floating web-card drop shadow.
 pub fn card() -> StyleFn<'static, RustTheme> {
     Box::new(|theme: &RustTheme| Style {
         background: Some(Background::Color(theme.palette.background.paper)),
         text_color: Some(theme.palette.text.primary),
         border: Border {
             radius: theme.shape.border_radius.into(),
-            width: 0.0,
-            color: Color::TRANSPARENT,
+            width: 1.0,
+            color: theme.palette.divider,
         },
-        shadow: Shadow {
-            color: Color { a: 0.2, ..Color::BLACK },
-            offset: Vector::new(0.0, 1.0),
-            blur_radius: 3.0,
-        },
+        shadow: Shadow::default(),
     })
 }
 
-/// A more prominent elevated surface with a stronger shadow.
+/// A more prominent elevated surface with a soft, native-range shadow.
 pub fn elevated() -> StyleFn<'static, RustTheme> {
     Box::new(|theme: &RustTheme| Style {
         background: Some(Background::Color(theme.palette.background.paper)),
@@ -48,9 +45,9 @@ pub fn elevated() -> StyleFn<'static, RustTheme> {
             color: Color::TRANSPARENT,
         },
         shadow: Shadow {
-            color: Color { a: 0.3, ..Color::BLACK },
-            offset: Vector::new(0.0, 4.0),
-            blur_radius: 10.0,
+            color: Color { a: 0.14, ..Color::BLACK },
+            offset: Vector::new(0.0, 2.0),
+            blur_radius: 6.0,
         },
     })
 }

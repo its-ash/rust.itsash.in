@@ -4,6 +4,7 @@
 use iced::widget::stack;
 use iced::{Element, Length};
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// Overlays a modal dialog over `base_content` when `is_open`.
 pub fn dialog<'a, Message>(
@@ -28,7 +29,7 @@ where
 
     let panel = iced::widget::container(
         iced::widget::column![
-            iced::widget::text(title.into()).size(20),
+            iced::widget::text(title.into()).size(20).font(system_font(FontWeight::Bold)),
             body.into(),
             iced::widget::row![iced::widget::horizontal_space(), action_row],
         ]

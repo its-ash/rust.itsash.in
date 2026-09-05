@@ -1,4 +1,7 @@
-/// Font weight, simplified to the two values RustTheme's default scale uses.
+use iced_core::{font, Font};
+
+/// Font weight, simplified to the values RustTheme's default scale uses.
+/// Maps directly onto [`iced_core::font::Weight`] via [`FontWeight::to_iced`].
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum FontWeight {
     Light,
@@ -7,7 +10,65 @@ pub enum FontWeight {
     Bold,
 }
 
-/// A single entry in the type scale: a pixel size and a weight.
+impl FontWeight {
+    pub const fn to_iced(self) -> font::Weight {
+        match self {
+            Self::Light => font::Weight::Light,
+            Self::Regular => font::Weight::Normal,
+            Self::Medium => font::Weight::Medium,
+            Self::Bold => font::Weight::Bold,
+        }
+    }
+}
+
+/// The platform's native UI font family name, resolved at compile time per
+/// OS so text renders in the same face as other apps on that platform
+/// (San Francisco on macOS, Segoe UI on Windows, the desktop's configured
+/// sans on Linux) instead of iced's generic bundled fallback.
+#[cfg(target_os = "macos")]
+pub const SYSTEM_FONT_NAME: &str = "SF Pro Text";
+#[cfg(target_os = "windows")]
+pub const SYSTEM_FONT_NAME: &str = "Segoe UI";
+#[cfg(target_os = "linux")]
+pub const SYSTEM_FONT_NAME: &str = "Cantarell";
+#[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
+pub const SYSTEM_FONT_NAME: &str = "Helvetica";
+
+/// The platform's native monospace font family name, used for tabular
+/// numerals, code, and other fixed-width contexts (e.g. table cells).
+#[cfg(target_os = "macos")]
+pub const SYSTEM_MONOSPACE_FONT_NAME: &str = "SF Mono";
+#[cfg(target_os = "windows")]
+pub const SYSTEM_MONOSPACE_FONT_NAME: &str = "Consolas";
+#[cfg(target_os = "linux")]
+pub const SYSTEM_MONOSPACE_FONT_NAME: &str = "Source Code Pro";
+#[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "linux")))]
+pub const SYSTEM_MONOSPACE_FONT_NAME: &str = "Courier New";
+
+/// Builds the platform system UI [`Font`] at the given `weight`. Text
+/// widgets should call `.font(...)` with this (via [`crate::Typography`]'s
+/// helpers) rather than relying on iced's generic default font, which is
+/// what makes RustTheme apps read as "web-styled" instead of native.
+pub fn system_font(weight: FontWeight) -> Font {
+    Font {
+        family: font::Family::Name(SYSTEM_FONT_NAME),
+        weight: weight.to_iced(),
+        ..Font::DEFAULT
+    }
+}
+
+/// Builds the platform system monospace [`Font`] at the given `weight`, for
+/// tabular/numeric or code-like content.
+pub fn system_monospace_font(weight: FontWeight) -> Font {
+    Font {
+        family: font::Family::Name(SYSTEM_MONOSPACE_FONT_NAME),
+        weight: weight.to_iced(),
+        ..Font::MONOSPACE
+    }
+}
+
+/// A single entry in the type scale: a pixel size and a weight. Call
+/// [`TypeStyle::font`] to get the matching platform [`Font`] for `.font(...)`.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct TypeStyle {
     pub size: f32,
@@ -18,10 +79,17 @@ impl TypeStyle {
     pub const fn new(size: f32, weight: FontWeight) -> Self {
         Self { size, weight }
     }
+
+    /// The platform system font for this style's weight.
+    pub fn font(&self) -> Font {
+        system_font(self.weight)
+    }
 }
 
-/// Mirrors MUI's default typography scale (h1..h6, subtitle1/2, body1/2,
-/// button, caption, overline).
+/// Desktop-native type scale. MUI's web scale (h1 at 96px) is sized for a
+/// full browser viewport; a desktop app window is far smaller and denser,
+/// so every step here is scaled down to sizes native toolkits actually use
+/// (a prominent window heading tops out around 28px, not 96px).
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct TypeScale {
     pub h1: TypeStyle,
@@ -42,39 +110,44 @@ pub struct TypeScale {
 impl Default for TypeScale {
     fn default() -> Self {
         Self {
-            h1: TypeStyle::new(96.0, FontWeight::Light),
-            h2: TypeStyle::new(60.0, FontWeight::Light),
-            h3: TypeStyle::new(48.0, FontWeight::Regular),
-            h4: TypeStyle::new(34.0, FontWeight::Regular),
-            h5: TypeStyle::new(24.0, FontWeight::Regular),
-            h6: TypeStyle::new(20.0, FontWeight::Medium),
-            subtitle1: TypeStyle::new(16.0, FontWeight::Regular),
-            subtitle2: TypeStyle::new(14.0, FontWeight::Medium),
-            body1: TypeStyle::new(16.0, FontWeight::Regular),
-            body2: TypeStyle::new(14.0, FontWeight::Regular),
-            button: TypeStyle::new(14.0, FontWeight::Medium),
-            caption: TypeStyle::new(12.0, FontWeight::Regular),
-            overline: TypeStyle::new(12.0, FontWeight::Regular),
+            h1: TypeStyle::new(28.0, FontWeight::Bold),
+            h2: TypeStyle::new(24.0, FontWeight::Bold),
+            h3: TypeStyle::new(20.0, FontWeight::Medium),
+            h4: TypeStyle::new(17.0, FontWeight::Medium),
+            h5: TypeStyle::new(15.0, FontWeight::Medium),
+            h6: TypeStyle::new(13.0, FontWeight::Medium),
+            subtitle1: TypeStyle::new(13.0, FontWeight::Regular),
+            subtitle2: TypeStyle::new(12.0, FontWeight::Medium),
+            body1: TypeStyle::new(13.0, FontWeight::Regular),
+            body2: TypeStyle::new(12.0, FontWeight::Regular),
+            button: TypeStyle::new(13.0, FontWeight::Medium),
+            caption: TypeStyle::new(11.0, FontWeight::Regular),
+            overline: TypeStyle::new(11.0, FontWeight::Medium),
         }
     }
 }
 
-/// Typography tokens: a font family label plus the full type scale.
-///
-/// The `font_family` field is a display label only (iced's default font is
-/// always used for rendering); it exists so themes/consumers can document
-/// or branch on intended family.
-#[derive(Debug, Clone, PartialEq)]
+/// Typography tokens: the platform system font (UI + monospace variants)
+/// plus the full type scale.
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Typography {
-    pub font_family: String,
     pub scale: TypeScale,
+}
+
+impl Typography {
+    /// The system UI font at `weight`, for ordinary text.
+    pub fn ui_font(&self, weight: FontWeight) -> Font {
+        system_font(weight)
+    }
+
+    /// The system monospace font at `weight`, for tabular/numeric content.
+    pub fn mono_font(&self, weight: FontWeight) -> Font {
+        system_monospace_font(weight)
+    }
 }
 
 impl Default for Typography {
     fn default() -> Self {
-        Self {
-            font_family: "Roboto, Helvetica, Arial, sans-serif".to_string(),
-            scale: TypeScale::default(),
-        }
+        Self { scale: TypeScale::default() }
     }
 }

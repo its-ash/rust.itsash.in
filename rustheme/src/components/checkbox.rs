@@ -2,6 +2,7 @@
 
 use iced::widget::checkbox::Checkbox;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// A primary-colored checkbox with a text label.
 pub fn checkbox<'a, Message>(
@@ -14,5 +15,6 @@ where
 {
     iced::widget::checkbox(label, is_checked)
         .on_toggle(on_toggle)
+        .font(system_font(FontWeight::Regular))
         .style(|theme, status| crate::style::checkbox::primary()(theme, status))
 }

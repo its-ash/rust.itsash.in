@@ -6,4 +6,7 @@ pub mod typography;
 pub use palette::{hex, BackgroundColors, ColorSet, Palette, TextColors};
 pub use shape::Shape;
 pub use spacing::Spacing;
-pub use typography::{FontWeight, TypeScale, TypeStyle, Typography};
+pub use typography::{
+    system_font, system_monospace_font, FontWeight, TypeScale, TypeStyle, Typography,
+    SYSTEM_FONT_NAME, SYSTEM_MONOSPACE_FONT_NAME,
+};

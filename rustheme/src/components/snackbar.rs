@@ -4,6 +4,7 @@
 use iced::widget::stack;
 use iced::{Element, Length};
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// Overlays a bottom-anchored snackbar over `base_content` when `is_visible`,
 /// with a trailing "Dismiss" action that fires `on_dismiss`.
@@ -30,7 +31,7 @@ where
     let surface = |theme: &RustTheme| theme.palette.text.primary;
     let on_surface = |theme: &RustTheme| theme.palette.background.default;
 
-    let dismiss = iced::widget::button(iced::widget::text("Dismiss").size(13))
+    let dismiss = iced::widget::button(iced::widget::text("Dismiss").size(13).font(system_font(FontWeight::Medium)))
         .padding([4, 8])
         .on_press(on_dismiss)
         .style(move |theme: &RustTheme, status| {
@@ -50,7 +51,7 @@ where
         });
 
     let bar = iced::widget::container(
-        iced::widget::row![iced::widget::text(message.into()), dismiss]
+        iced::widget::row![iced::widget::text(message.into()).font(system_font(FontWeight::Regular)), dismiss]
             .spacing(16)
             .align_y(iced::alignment::Vertical::Center),
     )
@@ -60,9 +61,9 @@ where
         text_color: Some(on_surface(theme)),
         border: iced::border::rounded(theme.shape.border_radius),
         shadow: iced::Shadow {
-            color: iced::Color { a: 0.3, ..iced::Color::BLACK },
+            color: iced::Color { a: 0.16, ..iced::Color::BLACK },
             offset: iced::Vector::new(0.0, 2.0),
-            blur_radius: 6.0,
+            blur_radius: 5.0,
         },
     });
 

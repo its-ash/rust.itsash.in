@@ -3,6 +3,7 @@
 
 use iced::widget::Row;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 fn page_button<'a, Message>(
     label: String,
@@ -15,6 +16,7 @@ where
     let mut btn = iced::widget::button(
         iced::widget::text(label)
             .size(14)
+            .font(system_font(FontWeight::Medium))
             .align_x(iced::alignment::Horizontal::Center)
             .align_y(iced::alignment::Vertical::Center),
     )

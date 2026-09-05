@@ -2,13 +2,14 @@
 
 use iced::widget::Container;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// A filled, pill-shaped chip.
 pub fn filled<'a, Message>(label: impl Into<String>) -> Container<'a, Message, RustTheme>
 where
     Message: 'a,
 {
-    iced::widget::container(iced::widget::text(label.into()).size(13))
+    iced::widget::container(iced::widget::text(label.into()).size(13).font(system_font(FontWeight::Medium)))
         .padding([4, 12])
         .style(|theme: &RustTheme| {
             let p = &theme.palette;
@@ -26,7 +27,7 @@ pub fn outlined<'a, Message>(label: impl Into<String>) -> Container<'a, Message,
 where
     Message: 'a,
 {
-    iced::widget::container(iced::widget::text(label.into()).size(13))
+    iced::widget::container(iced::widget::text(label.into()).size(13).font(system_font(FontWeight::Medium)))
         .padding([4, 12])
         .style(|theme: &RustTheme| {
             let p = &theme.palette;

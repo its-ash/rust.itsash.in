@@ -4,6 +4,7 @@
 use iced::widget::stack;
 use iced::{Element, Length};
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// Overlays a dropdown `items` menu below `base_content` when `is_open`.
 /// `on_select` maps a clicked item index to a `Message`; `on_dismiss` fires
@@ -27,7 +28,7 @@ where
     for (i, label) in items.iter().enumerate() {
         let message = on_select(i);
         list = list.push(
-            iced::widget::button(iced::widget::text(*label))
+            iced::widget::button(iced::widget::text(*label).font(system_font(FontWeight::Regular)))
                 .width(Length::Fill)
                 .padding([8, 16])
                 .on_press(message)

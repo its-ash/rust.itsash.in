@@ -3,6 +3,7 @@
 
 use iced::widget::{Column, Row};
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// A tab bar. `items` are the tab labels; `selected` is the active index;
 /// `on_select` maps a clicked index to a `Message`.
@@ -22,6 +23,7 @@ where
         let btn = iced::widget::button(
             iced::widget::text(*label)
                 .size(14)
+                .font(system_font(FontWeight::Medium))
                 .align_x(iced::alignment::Horizontal::Center),
         )
         .padding([10, 16])

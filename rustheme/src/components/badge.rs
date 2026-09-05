@@ -3,6 +3,7 @@
 use iced::widget::{stack, Container};
 use iced::{Element, Length};
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 fn pill<'a, Message>(text: String) -> Container<'a, Message, RustTheme>
 where
@@ -11,6 +12,7 @@ where
     iced::widget::container(
         iced::widget::text(text)
             .size(11)
+            .font(system_font(FontWeight::Medium))
             .align_x(iced::alignment::Horizontal::Center),
     )
     .padding([1, 6])

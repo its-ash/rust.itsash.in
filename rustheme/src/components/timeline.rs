@@ -3,6 +3,7 @@
 
 use iced::widget::Column;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// A single timeline entry: a title and a body description.
 pub struct TimelineItem {
@@ -55,8 +56,8 @@ where
         }
 
         let content = iced::widget::column![
-            iced::widget::text(item.title).size(15),
-            iced::widget::text(item.body).size(13).style(|theme: &RustTheme| iced::widget::text::Style {
+            iced::widget::text(item.title).size(15).font(system_font(FontWeight::Medium)),
+            iced::widget::text(item.body).size(13).font(system_font(FontWeight::Regular)).style(|theme: &RustTheme| iced::widget::text::Style {
                 color: Some(theme.palette.text.secondary),
             }),
         ]

@@ -3,6 +3,7 @@
 
 use iced::widget::Row;
 use crate::theme::RustTheme;
+use rustheme_core::{system_font, FontWeight};
 
 /// A star rating row. `value` is the current rating (stars `<= value` render
 /// filled); `max` is the star count (MUI default is 5); `on_rate` maps a
@@ -22,7 +23,7 @@ where
         let glyph = if filled { "★" } else { "☆" };
         let message = on_rate(i);
         row = row.push(
-            iced::widget::button(iced::widget::text(glyph).size(22))
+            iced::widget::button(iced::widget::text(glyph).size(22).font(system_font(FontWeight::Regular)))
                 .padding(2)
                 .on_press(message)
                 .style(move |theme: &RustTheme, status| {
