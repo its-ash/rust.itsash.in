@@ -21,16 +21,25 @@ where
         return base;
     }
 
+    // A snackbar always uses an inverted, high-contrast surface relative to
+    // the current theme (MUI does the same), so it stands out regardless of
+    // light/dark mode. `text.primary` and `background.default` are opposite
+    // ends of the contrast scale in both palettes, so swapping which one is
+    // the surface vs. the text color here — rather than reusing them in
+    // their normal roles — is what keeps this readable in both themes.
+    let surface = |theme: &RustTheme| theme.palette.text.primary;
+    let on_surface = |theme: &RustTheme| theme.palette.background.default;
+
     let dismiss = iced::widget::button(iced::widget::text("Dismiss").size(13))
         .padding([4, 8])
         .on_press(on_dismiss)
-        .style(|theme: &RustTheme, status| {
+        .style(move |theme: &RustTheme, status| {
             let p = &theme.palette;
             let text_color = match status {
                 iced::widget::button::Status::Hovered | iced::widget::button::Status::Pressed => {
                     p.primary.light
                 }
-                _ => p.background.paper,
+                _ => on_surface(theme),
             };
             iced::widget::button::Style {
                 background: None,
@@ -46,18 +55,15 @@ where
             .align_y(iced::alignment::Vertical::Center),
     )
     .padding([12, 20])
-    .style(|theme: &RustTheme| {
-        let p = &theme.palette;
-        iced::widget::container::Style {
-            background: Some(iced::Background::Color(p.text.primary)),
-            text_color: Some(p.background.paper),
-            border: iced::border::rounded(theme.shape.border_radius),
-            shadow: iced::Shadow {
-                color: iced::Color { a: 0.3, ..iced::Color::BLACK },
-                offset: iced::Vector::new(0.0, 2.0),
-                blur_radius: 6.0,
-            },
-        }
+    .style(move |theme: &RustTheme| iced::widget::container::Style {
+        background: Some(iced::Background::Color(surface(theme))),
+        text_color: Some(on_surface(theme)),
+        border: iced::border::rounded(theme.shape.border_radius),
+        shadow: iced::Shadow {
+            color: iced::Color { a: 0.3, ..iced::Color::BLACK },
+            offset: iced::Vector::new(0.0, 2.0),
+            blur_radius: 6.0,
+        },
     });
 
     let positioned = iced::widget::container(bar)
