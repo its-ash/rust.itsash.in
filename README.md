@@ -92,6 +92,53 @@ to the OS-native system font per platform (SF Pro Text / Segoe UI /
 Cantarell) — see `rustheme_core::set_global_font_family` for the underlying
 mechanism.
 
+### Heading vs. body font
+
+The type scale distinguishes a **heading** role (`h1`..`h6`, `subtitle1`/`2`,
+plus structural titles like the app bar and dialog) from the regular
+**body/UI** role (everything else), so you can pair a display font with a
+body font the way a real design system does:
+
+```rust
+use rustheme::prelude::*;
+
+let theme = RustTheme::builder()
+    .font("Source Sans Pro")     // body/UI text
+    .heading_font("Playfair Display") // h1..h6, subtitle1/2, app bar, dialog titles
+    .build();
+```
+
+`.font(...)` / `.heading_font(...)` only set the family **name** RustTheme
+uses — the font's bytes still have to be loaded into iced separately (a
+named font with no bytes loaded silently falls back to a generic font,
+since neither of these fonts ships with any OS). RustTheme bundles exactly
+this Playfair Display + Source Sans Pro pairing as ready-to-use font files,
+so you don't have to source and embed them yourself:
+
+```rust
+fn main() -> iced::Result {
+    rustheme::fonts::use_default_pairing(); // sets the family names
+    rustheme::load_fonts!(                  // loads their bytes into iced
+        iced::application("My App", update, view)
+    )
+    .run()
+}
+```
+
+(`load_fonts!` is a macro rather than a function because `.font(bytes)`
+lives on `iced::application(...)`'s builder type, which is generic over an
+iced-internal trait that can't be named as a bound outside the `iced` crate
+itself — the macro expands inline at the call site instead, where the
+concrete builder type is already known.)
+
+Both fonts are bundled under the SIL Open Font License in
+`rustheme/assets/fonts/` (license texts included alongside the `.ttf`
+files) and add about 850KB to your binary. If you don't call
+`use_default_pairing()` / `load_fonts!`, none of that is used — the six
+`include_bytes!`'d files are still compiled into the `rustheme` crate
+either way, since Rust can't conditionally embed them at runtime, but
+nothing loads or references them unless you opt in.
+
 ## Components
 
 | Component   | Variants                                              |

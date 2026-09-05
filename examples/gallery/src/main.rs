@@ -7,14 +7,15 @@ use rustheme_core::{system_font, system_monospace_font, FontWeight};
 fn main() -> iced::Result {
     // Configuring a custom global font is done once, here, before any UI is
     // built — see `RustTheme::builder()`'s docs for why font is process-wide
-    // while the palette stays per-`RustTheme`-instance. Left as the default
-    // system font for this gallery; uncomment to try a custom one (the named
-    // font must be installed on the system, since RustTheme doesn't bundle
-    // font files):
-    //
-    // let _ = RustTheme::builder().font("Inter").build();
+    // while the palette stays per-`RustTheme`-instance. This gallery uses
+    // RustTheme's bundled Playfair Display (headings) + Source Sans Pro
+    // (everything else) pairing: `use_default_pairing()` points the theme
+    // at those family names, and `load_fonts!` actually loads their bytes
+    // into iced (naming a font without loading its bytes would silently
+    // fall back to a generic font, since neither family ships with any OS).
+    rustheme::fonts::use_default_pairing();
 
-    iced::application(Gallery::title, Gallery::update, Gallery::view)
+    rustheme::load_fonts!(iced::application(Gallery::title, Gallery::update, Gallery::view))
         .theme(Gallery::theme)
         .run()
 }
@@ -227,7 +228,12 @@ impl Gallery {
         ) -> iced::widget::Container<'a, Message, RustTheme> {
             card::card(
                 iced::widget::column![
-                    iced::widget::text(title.to_string()).size(18).font(system_font(FontWeight::Bold)),
+                    // Section headings use the heading font role (Playfair
+                    // Display, when `rustheme::fonts::use_default_pairing()`
+                    // is active) so the display/body pairing is visible.
+                    iced::widget::text(title.to_string())
+                        .size(19)
+                        .font(rustheme_core::heading_font(FontWeight::Bold)),
                     content,
                 ]
                 .spacing(12),

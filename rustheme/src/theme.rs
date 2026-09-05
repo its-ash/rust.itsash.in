@@ -8,8 +8,9 @@
 //! `RustTheme`.
 
 pub use rustheme_core::{
-    hex, set_global_font_family, set_global_monospace_font_family, BackgroundColors, ColorSet,
-    FontFamily, FontWeight, Palette, Shape, Spacing, TextColors, TypeScale, TypeStyle, Typography,
+    hex, set_global_font_family, set_global_heading_font_family, set_global_monospace_font_family,
+    BackgroundColors, ColorSet, FontFamily, FontWeight, Palette, Shape, Spacing, TextColors,
+    TypeScale, TypeStyle, Typography,
 };
 
 /// The root theme type for RustTheme: a bundle of design tokens that every
@@ -74,6 +75,7 @@ pub struct RustThemeBuilder {
     shape: Option<Shape>,
     font: Option<FontFamily>,
     monospace_font: Option<FontFamily>,
+    heading_font: Option<FontFamily>,
 }
 
 impl RustThemeBuilder {
@@ -117,6 +119,22 @@ impl RustThemeBuilder {
         self
     }
 
+    /// Sets the process-wide default **heading** font family by name, used
+    /// only for `h1`..`h6`/`subtitle1`/`subtitle2` and structural titles
+    /// (app bar, dialog) — everything else keeps using [`Self::font`]'s
+    /// family. Falls back to the regular UI font if never set. Same
+    /// call-once-before-building-UI semantics as [`Self::font`].
+    ///
+    /// RustTheme's bundled Playfair Display + Source Sans Pro pairing (see
+    /// `rustheme::fonts`) is a ready-made example of this heading/body
+    /// split, loaded via `rustheme::fonts::use_default_pairing()` +
+    /// `rustheme::load_fonts!` rather than through this method, since those
+    /// two fonts need their bytes embedded, not just their names set.
+    pub fn heading_font(mut self, family_name: &'static str) -> Self {
+        self.heading_font = Some(FontFamily::Named(family_name));
+        self
+    }
+
     /// Builds the configured [`RustTheme`], applying any global font
     /// selection.
     pub fn build(self) -> RustTheme {
@@ -125,6 +143,9 @@ impl RustThemeBuilder {
         }
         if let Some(font) = self.monospace_font {
             set_global_monospace_font_family(font);
+        }
+        if let Some(font) = self.heading_font {
+            set_global_heading_font_family(font);
         }
         RustTheme {
             palette: self.palette.unwrap_or_default(),

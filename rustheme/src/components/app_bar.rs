@@ -4,7 +4,7 @@
 use iced::widget::Container;
 use iced::{Element, Length};
 use crate::theme::RustTheme;
-use rustheme_core::{system_font, FontWeight};
+use rustheme_core::{heading_font, FontWeight};
 
 /// A top app bar with a title on the left and `actions` on the right.
 pub fn app_bar<'a, Message>(
@@ -20,7 +20,7 @@ where
     }
 
     let content = iced::widget::row![
-        iced::widget::text(title.into()).size(20).font(system_font(FontWeight::Bold)),
+        iced::widget::text(title.into()).size(20).font(heading_font(FontWeight::Bold)),
         iced::widget::horizontal_space(),
         action_row,
     ]
