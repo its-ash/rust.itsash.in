@@ -82,6 +82,59 @@ fn main() {
 }
 ```
 
+### Global tokens
+
+For common app-wide changes, use the builder's focused overrides. Apply the
+same overrides to a `Palette::brand_light()` or `Palette::brand_dark()` base
+to configure each mode independently:
+
+```rust
+use rustheme::prelude::*;
+use rustheme_core::hex;
+
+let light = RustTheme::builder()
+    .palette(Palette::brand_light())
+    .primary_color(hex("#3F51B5"))
+    .text_color(hex("#1B1B1B"))
+    .surface_color(hex("#FCFCFF"))
+    .divider_color(hex("#D4D7E0"))
+    .border_radius(12.0)
+    .build();
+
+let dark = RustTheme::builder()
+    .palette(Palette::brand_dark())
+    .primary_color(hex("#B7C4FF"))
+    .text_color(hex("#F2F2F2"))
+    .border_radius(20.0)
+    .build();
+```
+
+`border_radius` applies one finite radius to all component shape tokens while
+preserving circular and pill-shaped controls. For complete token ownership,
+pass a custom `Palette` or `Shape` through `.palette(...)` / `.shape(...)`.
+
+For an app that needs **one settings object driving both modes at once**
+(e.g. a user-configurable theme with per-mode overrides), use
+`RustThemeConfig` instead of building each `RustTheme` by hand:
+
+```rust
+use rustheme::prelude::*;
+use rustheme_core::hex;
+
+let config = RustThemeConfig::new()
+    .radius(12.0)                         // both modes
+    .primary_color(hex("#3F51B5"))        // both modes
+    .dark_primary_color(hex("#B7C4FF"))   // dark-only override
+    .dark_radius(20.0);                   // dark-only override
+
+let light = config.light();
+let dark = config.dark();
+```
+
+Per-mode setters (`dark_*` / `light_*`) always win over the shared setter for
+that mode; unset tokens fall back to the brand default. See
+[COMPONENTS.md](COMPONENTS.md#theming) for the full setter list.
+
 The font family is set **process-wide** rather than per-`RustTheme`, and
 should only be configured on the first `RustTheme` you build, before
 constructing any UI: iced applies fonts at widget-construction time, not
@@ -103,7 +156,7 @@ body font the way a real design system does:
 use rustheme::prelude::*;
 
 let theme = RustTheme::builder()
-    .font("Source Sans Pro")     // body/UI text
+    .font("Roboto")              // body/UI text
     .heading_font("Playfair Display") // h1..h6, subtitle1/2, app bar, dialog titles
     .build();
 ```
@@ -112,7 +165,7 @@ let theme = RustTheme::builder()
 uses — the font's bytes still have to be loaded into iced separately (a
 named font with no bytes loaded silently falls back to a generic font,
 since neither of these fonts ships with any OS). RustTheme bundles exactly
-this Playfair Display + Source Sans Pro pairing as ready-to-use font files,
+this Playfair Display + Roboto pairing as ready-to-use font files,
 so you don't have to source and embed them yourself:
 
 ```rust
@@ -130,6 +183,20 @@ lives on `iced::application(...)`'s builder type, which is generic over an
 iced-internal trait that can't be named as a bound outside the `iced` crate
 itself — the macro expands inline at the call site instead, where the
 concrete builder type is already known.)
+
+If you'd rather use **Roboto as the single main font** everywhere — no
+separate display/heading face — call `use_roboto()` instead of
+`use_default_pairing()`; it still needs `load_fonts!` to load Roboto's bytes:
+
+```rust
+fn main() -> iced::Result {
+    rustheme::fonts::use_roboto();          // Roboto for both body and headings
+    rustheme::load_fonts!(
+        iced::application("My App", update, view)
+    )
+    .run()
+}
+```
 
 Both fonts are bundled under the SIL Open Font License in
 `rustheme/assets/fonts/` (license texts included alongside the `.ttf`
@@ -179,6 +246,21 @@ nothing loads or references them unless you opt in.
 | Autocomplete| autocomplete (text field + filtered dropdown)                    |
 | SpeedDial   | speed_dial (expandable Fab stack)                                  |
 | Timeline    | timeline (vertical event sequence)                                  |
+| Segmented Control | segmented (single-choice compact control)                    |
+| Bottom Navigation | bottom_navigation (icon-and-label destinations)               |
+| Empty State | empty_state (semantic icon, copy, optional action)                  |
+
+Plus higher-level **composite patterns** built from the primitives above —
+`search_bar`, `section_header`, `settings_row`, `stat_card`, `toolbar`,
+`confirm_dialog`, `toast`, `context_menu`, `sidebar_nav`, `key_value_list`,
+`data_card_grid`, `comparison_table` — for screens (settings pages,
+dashboards, pricing tables) that would otherwise mean hand-assembling
+several primitives every time. See [COMPONENTS.md](COMPONENTS.md#composite-patterns).
+
+See [COMPONENTS.md](COMPONENTS.md) for the full API reference — every
+component's function signatures, props, and enums, plus the complete
+theming/configuration API. It's written to be pasted into an LLM's context
+so it can pick the right component and props without reading the source.
 
 ## Workspace layout
 

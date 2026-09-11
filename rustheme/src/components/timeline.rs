@@ -18,7 +18,8 @@ impl TimelineItem {
 }
 
 /// A vertical timeline built from `items`, in order from top to bottom.
-pub fn timeline<'a, Message>(items: Vec<TimelineItem>) -> Column<'a, Message, RustTheme>
+/// Padding scales with `theme.spacing`.
+pub fn timeline<'a, Message>(theme: &RustTheme, items: Vec<TimelineItem>) -> Column<'a, Message, RustTheme>
 where
     Message: 'a,
 {
@@ -37,7 +38,7 @@ where
         });
 
         let mut marker_col = iced::widget::column![iced::widget::container(dot).padding(iced::Padding {
-            top: 4.0,
+            top: theme.spacing.unit(0.5),
             right: 0.0,
             bottom: 0.0,
             left: 0.0,
@@ -51,7 +52,7 @@ where
                     iced::widget::vertical_rule(2),
                 )
                 .height(iced::Length::Fixed(48.0))
-                .padding([4, 0]),
+                .padding([theme.spacing.unit(0.5), 0.0]),
             );
         }
 
@@ -65,7 +66,7 @@ where
         .padding(iced::Padding {
             top: 0.0,
             right: 0.0,
-            bottom: 16.0,
+            bottom: theme.spacing.unit(2.0),
             left: 0.0,
         });
 

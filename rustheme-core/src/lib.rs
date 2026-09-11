@@ -15,8 +15,10 @@
 pub mod tokens;
 
 pub use tokens::{
-    heading_font, hex, set_global_font_family, set_global_heading_font_family,
-    set_global_monospace_font_family, system_font, system_monospace_font, BackgroundColors,
-    ColorSet, FontFamily, FontRole, FontWeight, Palette, Shape, Spacing, TextColors, TypeScale,
-    TypeStyle, Typography, SYSTEM_FONT_NAME, SYSTEM_MONOSPACE_FONT_NAME,
+    contrast::{assert_aa, assert_aa_large, contrast_ratio, relative_luminance},
+    elevation::Elevation, heading_font, hex, material::Material, parse_hex,
+    set_global_font_family, set_global_heading_font_family, set_global_monospace_font_family,
+    system_font, system_monospace_font, to_hex, BackgroundColors, ColorSet, FontFamily, FontRole,
+    FontWeight, Palette, Shape, Spacing, TextColors, TypeScale, TypeStyle, Typography,
+    SYSTEM_FONT_NAME, SYSTEM_MONOSPACE_FONT_NAME,
 };

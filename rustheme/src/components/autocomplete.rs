@@ -13,8 +13,10 @@ use rustheme_core::{system_font, FontWeight};
 
 /// An autocomplete field: a text input plus a dropdown of `suggestions`
 /// shown when non-empty. `on_input` fires as the query changes; `on_select`
-/// maps a clicked suggestion's index to a `Message`.
+/// maps a clicked suggestion's index to a `Message`. Padding scales with
+/// `theme.spacing`.
 pub fn autocomplete<'a, Message>(
+    theme: &RustTheme,
     placeholder: &'a str,
     query: &'a str,
     suggestions: &[String],
@@ -26,7 +28,7 @@ where
 {
     let field = iced::widget::text_input(placeholder, query)
         .on_input(on_input)
-        .padding(10)
+        .padding(theme.spacing.unit(1.25))
         .style(|theme, status| crate::style::text_input::outlined()(theme, status));
 
     let mut col = iced::widget::column![field].spacing(0);
@@ -38,7 +40,7 @@ where
             list = list.push(
                 iced::widget::button(iced::widget::text(suggestion.clone()).size(14).font(system_font(FontWeight::Regular)))
                     .width(iced::Length::Fill)
-                    .padding([8, 12])
+                    .padding([theme.spacing.unit(1.0), theme.spacing.unit(1.5)])
                     .on_press(message)
                     .style(|theme: &RustTheme, status| {
                         let p = &theme.palette;
@@ -60,7 +62,7 @@ where
 
         col = col.push(
             iced::widget::container(list)
-                .padding(4)
+                .padding(theme.spacing.unit(0.5))
                 .style(|theme| crate::style::container::elevated()(theme)),
         );
     }

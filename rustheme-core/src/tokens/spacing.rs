@@ -8,6 +8,23 @@ impl Spacing {
     pub fn unit(&self, factor: f32) -> f32 {
         self.0 * factor
     }
+
+    /// A tighter base unit (4px) for dense, information-heavy UIs (data
+    /// tables, dashboards).
+    pub const fn compact() -> Self {
+        Self(4.0)
+    }
+
+    /// The default MUI base unit (8px), balanced for general-purpose UI.
+    pub const fn normal() -> Self {
+        Self(8.0)
+    }
+
+    /// A looser base unit (12px) for airier, touch-friendly, or marketing-
+    /// style UIs.
+    pub const fn spacious() -> Self {
+        Self(12.0)
+    }
 }
 
 impl Default for Spacing {

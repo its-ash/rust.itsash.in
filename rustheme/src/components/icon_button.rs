@@ -1,15 +1,18 @@
 //! MUI-style `IconButton`: a compact circular button for icon-only actions.
 //!
-//! Icons are accepted as `impl text::IntoFragment` (a single glyph/symbol),
-//! matching `Button`'s label parameter — this project has no icon asset
-//! system, and reusing the same text-fragment pattern as `button.rs` keeps
-//! the API consistent rather than introducing a separate `Element`-based
-//! icon abstraction just for this one component.
+//! Icons are accepted as `impl text::IntoFragment` (a single glyph/symbol).
+//! All variants enforce a 44x44px minimum hit area. The default
+//! [`primary`]/[`secondary`] now map onto the new neutral icon styles so a
+//! row of icon buttons never competes with a nearby primary button; use
+//! [`icon_primary`] for the one accent-filled icon action.
 
 use iced::widget::button::Button;
 use iced::widget::text;
+use iced::{Alignment, Length};
 use crate::theme::RustTheme;
-use rustheme_core::{system_font, FontWeight};
+
+/// Minimum tap target — 44px on a side, clearing the touch ergonomics bar.
+const HIT: u16 = 44;
 
 fn base<'a, Message>(glyph: impl text::IntoFragment<'a>) -> Button<'a, Message, RustTheme>
 where
@@ -18,70 +21,74 @@ where
     iced::widget::button(
         iced::widget::text(glyph)
             .size(18)
-            .font(system_font(FontWeight::Medium))
-            .align_x(iced::alignment::Horizontal::Center)
-            .align_y(iced::alignment::Vertical::Center),
+            .font(crate::components::icons::font())
+            .align_x(Alignment::Center)
+            .align_y(Alignment::Center),
     )
-    .padding(8)
-    .width(40)
-    .height(40)
+    .padding(0)
+    .width(Length::Fixed(HIT as f32))
+    .height(Length::Fixed(HIT as f32))
 }
 
-/// A primary, filled circular icon button.
+/// A neutral filled icon button (was: accent primary). Reads as a supporting
+/// control, not the main action.
 pub fn primary<'a, Message>(glyph: impl text::IntoFragment<'a>, on_press: Message) -> Button<'a, Message, RustTheme>
 where
     Message: Clone + 'a,
 {
     base(glyph).on_press(on_press).style(|theme, status| {
-        let s = crate::style::button::primary()(theme, status);
-        iced::widget::button::Style {
-            border: iced::border::rounded(20),
-            ..s
-        }
+        crate::style::button::icon()(theme, status)
     })
 }
 
-/// A secondary, filled circular icon button.
+/// A neutral filled icon button — alias for [`primary`].
 pub fn secondary<'a, Message>(glyph: impl text::IntoFragment<'a>, on_press: Message) -> Button<'a, Message, RustTheme>
 where
     Message: Clone + 'a,
 {
     base(glyph).on_press(on_press).style(|theme, status| {
-        let s = crate::style::button::secondary()(theme, status);
-        iced::widget::button::Style {
-            border: iced::border::rounded(20),
-            ..s
-        }
+        crate::style::button::icon()(theme, status)
     })
 }
 
-/// An outlined circular icon button.
+/// A bordered icon button — 1px divider ring on a transparent fill.
 pub fn outlined<'a, Message>(glyph: impl text::IntoFragment<'a>, on_press: Message) -> Button<'a, Message, RustTheme>
 where
     Message: Clone + 'a,
 {
     base(glyph).on_press(on_press).style(|theme, status| {
-        let s = crate::style::button::outlined()(theme, status);
-        iced::widget::button::Style {
-            border: iced::Border {
-                radius: 20.0.into(),
-                ..s.border
-            },
-            ..s
-        }
+        crate::style::button::icon_bordered()(theme, status)
     })
 }
 
-/// A borderless, transparent icon button — the most common MUI `IconButton`.
+/// A borderless, transparent icon button — the lightest variant.
 pub fn text_icon<'a, Message>(glyph: impl text::IntoFragment<'a>, on_press: Message) -> Button<'a, Message, RustTheme>
 where
     Message: Clone + 'a,
 {
     base(glyph).on_press(on_press).style(|theme, status| {
-        let s = crate::style::button::text()(theme, status);
-        iced::widget::button::Style {
-            border: iced::border::rounded(20),
-            ..s
-        }
+        crate::style::button::icon()(theme, status)
+    })
+}
+
+/// An accent-filled icon button — the one primary icon action on a surface.
+pub fn icon_primary<'a, Message>(glyph: impl text::IntoFragment<'a>, on_press: Message) -> Button<'a, Message, RustTheme>
+where
+    Message: Clone + 'a,
+{
+    base(glyph).on_press(on_press).style(|theme, status| {
+        crate::style::button::icon_primary()(theme, status)
+    })
+}
+
+/// A destructive (error-red) icon button.
+pub fn destructive<'a, Message>(glyph: impl text::IntoFragment<'a>, on_press: Message) -> Button<'a, Message, RustTheme>
+where
+    Message: Clone + 'a,
+{
+    base(glyph).on_press(on_press).style(|theme, status| {
+        let mut s = crate::style::button::destructive()(theme, status);
+        s.border = iced::border::rounded(50.0);
+        s
     })
 }

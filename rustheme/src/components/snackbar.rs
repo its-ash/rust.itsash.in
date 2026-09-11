@@ -7,8 +7,10 @@ use crate::theme::RustTheme;
 use rustheme_core::{system_font, FontWeight};
 
 /// Overlays a bottom-anchored snackbar over `base_content` when `is_visible`,
-/// with a trailing "Dismiss" action that fires `on_dismiss`.
+/// with a trailing "Dismiss" action that fires `on_dismiss`. Padding scales
+/// with `theme.spacing`.
 pub fn snackbar<'a, Message>(
+    theme: &RustTheme,
     base_content: impl Into<Element<'a, Message, RustTheme>>,
     is_visible: bool,
     message: impl Into<String>,
@@ -32,7 +34,7 @@ where
     let on_surface = |theme: &RustTheme| theme.palette.background.default;
 
     let dismiss = iced::widget::button(iced::widget::text("Dismiss").size(13).font(system_font(FontWeight::Medium)))
-        .padding([4, 8])
+        .padding([theme.spacing.unit(0.5), theme.spacing.unit(1.0)])
         .on_press(on_dismiss)
         .style(move |theme: &RustTheme, status| {
             let p = &theme.palette;
@@ -55,22 +57,18 @@ where
             .spacing(16)
             .align_y(iced::alignment::Vertical::Center),
     )
-    .padding([12, 20])
+    .padding([theme.spacing.unit(1.5), theme.spacing.unit(2.5)])
     .style(move |theme: &RustTheme| iced::widget::container::Style {
         background: Some(iced::Background::Color(surface(theme))),
         text_color: Some(on_surface(theme)),
-        border: iced::border::rounded(theme.shape.border_radius),
-        shadow: iced::Shadow {
-            color: iced::Color { a: 0.16, ..iced::Color::BLACK },
-            offset: iced::Vector::new(0.0, 2.0),
-            blur_radius: 5.0,
-        },
+        border: iced::border::rounded(theme.shape.extra_small),
+        shadow: rustheme_core::Elevation::Level3.shadow(),
     });
 
     let positioned = iced::widget::container(bar)
         .width(Length::Fill)
         .height(Length::Fill)
-        .padding(20)
+        .padding(theme.spacing.unit(2.5))
         .align_x(iced::alignment::Horizontal::Center)
         .align_y(iced::alignment::Vertical::Bottom);
 

@@ -6,8 +6,9 @@ use crate::theme::RustTheme;
 use rustheme_core::{system_font, system_monospace_font, FontWeight};
 
 /// A simple data table. `headers` labels the columns; `rows` is the body
-/// data, each inner `Vec` a row of cell text in column order.
-pub fn table<'a, Message>(headers: &[&'a str], rows: &[Vec<String>]) -> Column<'a, Message, RustTheme>
+/// data, each inner `Vec` a row of cell text in column order. Padding scales
+/// with `theme.spacing`.
+pub fn table<'a, Message>(theme: &RustTheme, headers: &[&'a str], rows: &[Vec<String>]) -> Column<'a, Message, RustTheme>
 where
     Message: 'a,
 {
@@ -15,7 +16,7 @@ where
     for h in headers {
         header_row = header_row.push(
             iced::widget::container(iced::widget::text(*h).size(13).font(system_font(FontWeight::Medium)))
-                .padding([10, 12])
+                .padding([theme.spacing.unit(1.25), theme.spacing.unit(1.5)])
                 .width(iced::Length::FillPortion(1))
                 .style(|theme: &RustTheme| iced::widget::container::Style {
                     background: Some(iced::Background::Color(theme.palette.background.default)),
@@ -34,7 +35,7 @@ where
         for cell in row_data {
             row = row.push(
                 iced::widget::container(iced::widget::text(cell.clone()).size(13).font(system_monospace_font(FontWeight::Regular)))
-                    .padding([10, 12])
+                    .padding([theme.spacing.unit(1.25), theme.spacing.unit(1.5)])
                     .width(iced::Length::FillPortion(1)),
             );
         }

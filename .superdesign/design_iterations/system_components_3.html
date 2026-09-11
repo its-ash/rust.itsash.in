@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RUSTHEME / SYSTEM COMPONENTS — SPEC 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          paper: '#fafaf9',
+          ink: '#0a0a0a',
+          accent: '#ff5a1f',
+        },
+        fontFamily: {
+          mono: ['IBM Plex Mono', 'monospace'],
+          sans: ['Space Grotesk', 'sans-serif'],
+        },
+        boxShadow: {
+          hard: '4px 4px 0 0 #0a0a0a',
+          'hard-sm': '2px 2px 0 0 #0a0a0a',
+          'hard-accent': '4px 4px 0 0 #ff5a1f',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  body { background-color: #fafaf9; }
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(10,10,10,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,10,10,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  input[type="text"]::placeholder,
+  input[type="search"]::placeholder,
+  input[type="email"]::placeholder { color: #0a0a0a; opacity: 0.4; }
+  .no-tap-highlight { -webkit-tap-highlight-color: transparent; }
+</style>
+</head>
+<body class="font-sans text-ink bg-paper bg-grid min-h-screen">
+
+  <!-- HEADER -->
+  <header class="border-b-2 border-ink px-4 sm:px-8 py-6 sm:py-8 bg-paper">
+    <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <div>
+        <p class="font-mono text-xs tracking-[0.2em] text-accent font-semibold mb-2">SPEC-SHEET / REV.03 / 2026-09-10</p>
+        <h1 class="font-sans text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">RUSTHEME COMPONENT SYSTEM</h1>
+        <p class="font-mono text-sm sm:text-base text-ink/70 mt-2 max-w-xl">
+          Inputs, selects, search &amp; buttons — engineered primitives for the themed application shell.
+        </p>
+      </div>
+      <div class="flex items-center gap-4 shrink-0">
+        <div class="border-2 border-ink px-4 py-2 font-mono text-xs">
+          <span class="block text-ink/50 mb-1">STATUS</span>
+          <span class="flex items-center gap-2 font-semibold">
+            <span class="w-2 h-2 bg-accent inline-block"></span> ACTIVE BUILD
+          </span>
+        </div>
+        <div class="border-2 border-ink px-4 py-2 font-mono text-xs hidden sm:block">
+          <span class="block text-ink/50 mb-1">GRID</span>
+          <span class="font-semibold">4PT / 8PT</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1440px] mx-auto px-4 sm:px-8 py-8 sm:py-12 flex flex-col gap-12 sm:gap-16">
+
+    <!-- 01 / INPUTS -->
+    <section>
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-mono text-xs sm:text-sm tracking-[0.15em] font-bold bg-ink text-white px-3 py-1.5">01 / INPUTS</h2>
+        <div class="flex-1 border-t-2 border-dashed border-ink/30"></div>
+        <span class="font-mono text-xs text-ink/50 hidden sm:inline">TEXT-FIELD.MODULE</span>
+      </div>
+
+      <div class="border-2 border-ink bg-white shadow-hard p-4 sm:p-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+
+          <!-- Default -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / DEFAULT</label>
+            <input type="text" placeholder="Enter value..."
+              class="w-full border-2 border-ink px-3 py-2 font-sans text-sm bg-white focus:outline-none focus:border-accent focus:shadow-hard-sm rounded-[2px] transition-shadow" />
+            <p class="font-mono text-[11px] text-ink/50">HELPER — standard input state</p>
+          </div>
+
+          <!-- Focused -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / FOCUSED</label>
+            <input type="text" value="user@rustheme.dev"
+              class="w-full border-2 border-accent px-3 py-2 font-sans text-sm bg-white outline-none shadow-hard-sm rounded-[2px]" />
+            <p class="font-mono text-[11px] text-accent font-medium">ACTIVE — caret is present</p>
+          </div>
+
+          <!-- Filled -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / FILLED</label>
+            <input type="text" value="Component_Library_v3"
+              class="w-full border-2 border-ink px-3 py-2 font-sans text-sm font-medium bg-ink/5 focus:outline-none focus:border-accent rounded-[2px]" />
+            <p class="font-mono text-[11px] text-ink/50">HELPER — value committed</p>
+          </div>
+
+          <!-- Disabled -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide text-ink/40">LABEL / DISABLED</label>
+            <input type="text" value="Locked field" disabled
+              class="w-full border-2 border-ink/30 px-3 py-2 font-sans text-sm bg-ink/5 text-ink/40 rounded-[2px] cursor-not-allowed" />
+            <p class="font-mono text-[11px] text-ink/30">HELPER — not editable</p>
+          </div>
+
+          <!-- Error -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / ERROR</label>
+            <input type="text" value="not-an-email"
+              class="w-full border-2 border-ink px-3 py-2 font-sans text-sm bg-white focus:outline-none rounded-[2px]"
+              style="border-color:#0a0a0a;" />
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5" class="shrink-0">
+                <path d="M12 9v4M12 17h.01M10.29 3.86l-8.18 14.14A2 2 0 0 0 3.82 21h16.36a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
+              </svg>
+              <p class="font-mono text-[11px] font-semibold">ERROR — must be a valid email address</p>
+            </div>
+          </div>
+
+          <!-- Leading icon -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / LEADING ICON</label>
+            <div class="relative">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <rect x="3" y="4" width="18" height="16" rx="0" />
+                <path d="M3 8h18M8 4v16" />
+              </svg>
+              <input type="text" placeholder="Project ID"
+                class="w-full border-2 border-ink pl-9 pr-3 py-2 font-sans text-sm bg-white focus:outline-none focus:border-accent focus:shadow-hard-sm rounded-[2px] transition-shadow" />
+            </div>
+            <p class="font-mono text-[11px] text-ink/50">HELPER — icon-prefixed field</p>
+          </div>
+
+          <!-- Trailing icon -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / TRAILING ICON</label>
+            <div class="relative">
+              <input type="text" value="8f2c-91ab-44e0"
+                class="w-full border-2 border-ink pl-3 pr-9 py-2 font-sans text-sm bg-white focus:outline-none focus:border-accent focus:shadow-hard-sm rounded-[2px] transition-shadow" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </div>
+            <p class="font-mono text-[11px] text-ink/50">HELPER — verified checksum</p>
+          </div>
+
+          <!-- Textarea-ish w label+helper -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / WITH HELPER</label>
+            <input type="text" placeholder="api.rustheme.dev/v1"
+              class="w-full border-2 border-ink px-3 py-2 font-sans text-sm bg-white focus:outline-none focus:border-accent focus:shadow-hard-sm rounded-[2px] transition-shadow" />
+            <p class="font-mono text-[11px] text-ink/50">HELPER — endpoint base URL, no trailing slash</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 / DROPDOWNS -->
+    <section>
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-mono text-xs sm:text-sm tracking-[0.15em] font-bold bg-ink text-white px-3 py-1.5">02 / DROPDOWNS</h2>
+        <div class="flex-1 border-t-2 border-dashed border-ink/30"></div>
+        <span class="font-mono text-xs text-ink/50 hidden sm:inline">SELECT.MODULE</span>
+      </div>
+
+      <div class="border-2 border-ink bg-white shadow-hard p-4 sm:p-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+
+          <!-- Closed select -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / CLOSED</label>
+            <button type="button" class="no-tap-highlight w-full flex items-center justify-between border-2 border-ink px-3 py-2 font-sans text-sm bg-white rounded-[2px] hover:shadow-hard-sm transition-shadow">
+              <span>Production</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            <p class="font-mono text-[11px] text-ink/50">HELPER — environment target</p>
+          </div>
+
+          <!-- Open select with panel -->
+          <div class="flex flex-col gap-2 relative">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / OPEN</label>
+            <button type="button" class="no-tap-highlight w-full flex items-center justify-between border-2 border-accent px-3 py-2 font-sans text-sm bg-white rounded-[2px] shadow-hard-sm">
+              <span class="font-medium">Region — us-east-1</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff5a1f" stroke-width="2.5">
+                <path d="m18 15-6-6-6 6" />
+              </svg>
+            </button>
+            <div class="absolute top-[68px] left-0 w-full border-2 border-ink bg-white shadow-hard z-10 rounded-[2px]">
+              <ul class="font-mono text-sm">
+                <li class="px-3 py-2 flex items-center justify-between bg-accent/10 border-b-2 border-ink cursor-pointer">
+                  <span>us-east-1</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff5a1f" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                </li>
+                <li class="px-3 py-2 border-b-2 border-ink hover:bg-ink/5 cursor-pointer">eu-west-2</li>
+                <li class="px-3 py-2 border-b-2 border-ink hover:bg-ink/5 cursor-pointer">ap-south-1</li>
+                <li class="px-3 py-2 hover:bg-ink/5 cursor-pointer">sa-east-1</li>
+              </ul>
+            </div>
+            <p class="font-mono text-[11px] text-ink/50 mt-16 sm:mt-16">HELPER — panel is absolutely positioned</p>
+          </div>
+
+          <!-- Disabled select -->
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide text-ink/40">LABEL / DISABLED</label>
+            <button type="button" disabled class="w-full flex items-center justify-between border-2 border-ink/30 px-3 py-2 font-sans text-sm bg-ink/5 text-ink/40 rounded-[2px] cursor-not-allowed">
+              <span>Locked selection</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-opacity="0.3" stroke-width="2">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            <p class="font-mono text-[11px] text-ink/30">HELPER — permission required</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 / SEARCH -->
+    <section>
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-mono text-xs sm:text-sm tracking-[0.15em] font-bold bg-ink text-white px-3 py-1.5">03 / SEARCH</h2>
+        <div class="flex-1 border-t-2 border-dashed border-ink/30"></div>
+        <span class="font-mono text-xs text-ink/50 hidden sm:inline">SEARCH-BAR.MODULE</span>
+      </div>
+
+      <div class="border-2 border-ink bg-white shadow-hard p-4 sm:p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / GLOBAL SEARCH</label>
+            <div class="relative">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+              <input type="search" placeholder="Search components, tokens, docs..."
+                class="w-full border-2 border-ink pl-10 pr-10 py-2.5 font-sans text-sm bg-white focus:outline-none focus:border-accent focus:shadow-hard-sm rounded-[2px] transition-shadow" />
+              <button type="button" aria-label="Clear search" class="no-tap-highlight absolute right-3 top-1/2 -translate-y-1/2 text-ink/60 hover:text-ink">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <p class="font-mono text-[11px] text-ink/50">HELPER — press "/" to focus from anywhere</p>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-semibold tracking-wide">LABEL / COMPACT SEARCH</label>
+            <div class="relative max-w-xs">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" class="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+              <input type="search" value="button.primary"
+                class="w-full border-2 border-ink pl-8 pr-8 py-1.5 font-mono text-xs bg-white focus:outline-none focus:border-accent focus:shadow-hard-sm rounded-[2px] transition-shadow" />
+              <button type="button" aria-label="Clear search" class="no-tap-highlight absolute right-2.5 top-1/2 -translate-y-1/2 text-ink/60 hover:text-ink">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <p class="font-mono text-[11px] text-ink/50">HELPER — inline toolbar variant</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 / BUTTONS -->
+    <section>
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="font-mono text-xs sm:text-sm tracking-[0.15em] font-bold bg-ink text-white px-3 py-1.5">04 / BUTTONS</h2>
+        <div class="flex-1 border-t-2 border-dashed border-ink/30"></div>
+        <span class="font-mono text-xs text-ink/50 hidden sm:inline">ACTION.MODULE</span>
+      </div>
+
+      <div class="border-2 border-ink bg-white shadow-hard p-4 sm:p-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+
+          <!-- Primary -->
+          <div class="flex flex-col gap-3">
+            <p class="font-mono text-xs font-semibold tracking-wide">PRIMARY</p>
+            <div class="flex flex-wrap items-center gap-4">
+              <button class="no-tap-highlight bg-accent text-white font-sans font-semibold text-sm px-6 py-3 border-2 border-ink rounded-[2px] shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all">
+                Deploy Build
+              </button>
+              <button class="no-tap-highlight bg-accent text-white font-sans font-semibold text-xs px-4 py-2 border-2 border-ink rounded-[2px] shadow-hard-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all">
+                Save
+              </button>
+            </div>
+          </div>
+
+          <!-- Secondary -->
+          <div class="flex flex-col gap-3">
+            <p class="font-mono text-xs font-semibold tracking-wide">SECONDARY</p>
+            <div class="flex flex-wrap items-center gap-4">
+              <button class="no-tap-highlight bg-ink text-white font-sans font-semibold text-sm px-6 py-3 border-2 border-ink rounded-[2px] shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all">
+                Run Pipeline
+              </button>
+              <button class="no-tap-highlight bg-ink text-white font-sans font-semibold text-xs px-4 py-2 border-2 border-ink rounded-[2px] shadow-hard-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all">
+                Export
+              </button>
+            </div>
+          </div>
+
+          <!-- Outline -->
+          <div class="flex flex-col gap-3">
+            <p class="font-mono text-xs font-semibold tracking-wide">OUTLINE</p>
+            <div class="flex flex-wrap items-center gap-4">
+              <button class="no-tap-highlight bg-white text-ink font-sans font-semibold text-sm px-6 py-3 border-2 border-ink rounded-[2px] hover:bg-ink/5 transition-colors">
+                View Docs
+              </button>
+              <button class="no-tap-highlight bg-white text-ink font-sans font-semibold text-xs px-4 py-2 border-2 border-ink rounded-[2px] hover:bg-ink/5 transition-colors">
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <!-- Ghost / text -->
+          <div class="flex flex-col gap-3">
+            <p class="font-mono text-xs font-semibold tracking-wide">GHOST / TEXT</p>
+            <div class="flex flex-wrap items-center gap-4">
+              <button class="no-tap-highlight bg-transparent text-ink font-sans font-semibold text-sm px-6 py-3 border-2 border-transparent rounded-[2px] hover:border-ink/20 hover:bg-ink/5 transition-colors">
+                Dismiss
+              </button>
+              <button class="no-tap-highlight bg-transparent text-ink font-sans font-semibold text-xs px-4 py-2 border-2 border-transparent rounded-[2px] hover:border-ink/20 hover:bg-ink/5 transition-colors underline decoration-2 underline-offset-4">
+                Learn more
+              </button>
+            </div>
+          </div>
+
+          <!-- Destructive -->
+          <div class="flex flex-col gap-3">
+            <p class="font-mono text-xs font-semibold tracking-wide">DESTRUCTIVE</p>
+            <div class="flex flex-wrap items-center gap-4">
+              <button class="no-tap-highlight bg-white text-ink font-sans font-semibold text-sm px-6 py-3 border-2 border-ink rounded-[2px] shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all" style="box-shadow:4px 4px 0 0 #0a0a0a;">
+                <span class="flex items-center gap-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/></svg>
+                  Delete Resource
+                </span>
+              </button>
+              <button class="no-tap-highlight bg-white text-ink font-sans font-semibold text-xs px-4 py-2 border-2 border-ink rounded-[2px] shadow-hard-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all">
+                Remove
+              </button>
+            </div>
+          </div>
+
+          <!-- Disabled -->
+          <div class="flex flex-col gap-3">
+            <p class="font-mono text-xs font-semibold tracking-wide text-ink/40">DISABLED</p>
+            <div class="flex flex-wrap items-center gap-4">
+              <button disabled class="bg-ink/10 text-ink/35 font-sans font-semibold text-sm px-6 py-3 border-2 border-ink/20 rounded-[2px] cursor-not-allowed">
+                Deploy Build
+              </button>
+              <button disabled class="bg-ink/10 text-ink/35 font-sans font-semibold text-xs px-4 py-2 border-2 border-ink/20 rounded-[2px] cursor-not-allowed">
+                Save
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t-2 border-ink px-4 sm:px-8 py-6 mt-4">
+    <div class="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 font-mono text-[11px] text-ink/50">
+      <span>RUSTHEME DESIGN SYSTEM — INTERNAL SPEC SHEET</span>
+      <span>PAGE 03 / 03 — BLUEPRINT REV — GRID 4/8PT</span>
+    </div>
+  </footer>
+
+</body>
+</html>

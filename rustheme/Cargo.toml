@@ -8,3 +8,4 @@ description = "A MUI-inspired theming framework and component library for the Ic
 [dependencies]
 rustheme-core = { path = "../rustheme-core" }
 iced = { version = "0.13", features = ["canvas"] }
+syntect = { version = "5.3", default-features = false, features = ["default-fancy"] }

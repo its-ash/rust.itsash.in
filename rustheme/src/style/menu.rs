@@ -12,7 +12,7 @@ pub fn default() -> StyleFn<'static, RustTheme> {
             border: Border {
                 color: p.divider,
                 width: 1.0,
-                radius: theme.shape.border_radius.into(),
+                radius: theme.shape.small.into(),
             },
             text_color: p.text.primary,
             selected_text_color: p.primary.contrast_text,

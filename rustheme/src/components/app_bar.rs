@@ -4,10 +4,12 @@
 use iced::widget::Container;
 use iced::{Element, Length};
 use crate::theme::RustTheme;
-use rustheme_core::{heading_font, FontWeight};
+use rustheme_core::{heading_font, Elevation, FontWeight};
 
 /// A top app bar with a title on the left and `actions` on the right.
+/// Padding scales with `theme.spacing`.
 pub fn app_bar<'a, Message>(
+    theme: &RustTheme,
     title: impl Into<String>,
     actions: Vec<Element<'a, Message, RustTheme>>,
 ) -> Container<'a, Message, RustTheme>
@@ -28,19 +30,15 @@ where
     .width(Length::Fill);
 
     iced::widget::container(content)
-        .padding([12, 20])
+        .padding([theme.spacing.unit(1.5), theme.spacing.unit(2.5)])
         .width(Length::Fill)
         .style(|theme: &RustTheme| {
             let p = &theme.palette;
             iced::widget::container::Style {
-                background: Some(iced::Background::Color(p.primary.main)),
-                text_color: Some(p.primary.contrast_text),
+                background: Some(iced::Background::Color(p.background.default)),
+                text_color: Some(p.text.primary),
                 border: iced::Border::default(),
-                shadow: iced::Shadow {
-                    color: iced::Color { a: 0.12, ..iced::Color::BLACK },
-                    offset: iced::Vector::new(0.0, 1.0),
-                    blur_radius: 3.0,
-                },
+                shadow: Elevation::Level1.shadow(),
             }
         })
 }

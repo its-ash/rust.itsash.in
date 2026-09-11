@@ -11,7 +11,7 @@ pub fn primary() -> StyleFn<'static, RustTheme> {
             background: Background::Color(p.divider),
             bar: Background::Color(p.primary.main),
             border: Border {
-                radius: (theme.shape.border_radius / 2.0).into(),
+                radius: (theme.shape.extra_small / 2.0).into(),
                 width: 0.0,
                 color: Color::TRANSPARENT,
             },

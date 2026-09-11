@@ -17,6 +17,7 @@ pub enum Severity {
 }
 
 fn banner<'a, Message>(
+    theme: &RustTheme,
     severity: Severity,
     title: Option<String>,
     body: impl Into<String>,
@@ -38,7 +39,7 @@ where
     if let Some(on_dismiss) = on_dismiss {
         row = row.push(
             iced::widget::button(iced::widget::text("✕").size(14).font(system_font(FontWeight::Regular)))
-                .padding(4)
+                .padding(theme.spacing.unit(0.5))
                 .on_press(on_dismiss)
                 .style(move |theme: &RustTheme, status| {
                     let set = severity_color(theme, severity);
@@ -57,7 +58,7 @@ where
     }
 
     iced::widget::container(row)
-        .padding([12, 16])
+        .padding([theme.spacing.unit(1.5), theme.spacing.unit(2.0)])
         .width(Length::Fill)
         .style(move |theme: &RustTheme| {
             let set = severity_color(theme, severity);
@@ -70,40 +71,41 @@ where
         })
 }
 
-/// A success-severity alert banner.
-pub fn success<'a, Message>(body: impl Into<String>, on_dismiss: Option<Message>) -> Container<'a, Message, RustTheme>
+/// A success-severity alert banner. Padding scales with `theme.spacing`.
+pub fn success<'a, Message>(theme: &RustTheme, body: impl Into<String>, on_dismiss: Option<Message>) -> Container<'a, Message, RustTheme>
 where
     Message: Clone + 'a,
 {
-    banner(Severity::Success, None, body, on_dismiss)
+    banner(theme, Severity::Success, None, body, on_dismiss)
 }
 
-/// An info-severity alert banner.
-pub fn info<'a, Message>(body: impl Into<String>, on_dismiss: Option<Message>) -> Container<'a, Message, RustTheme>
+/// An info-severity alert banner. Padding scales with `theme.spacing`.
+pub fn info<'a, Message>(theme: &RustTheme, body: impl Into<String>, on_dismiss: Option<Message>) -> Container<'a, Message, RustTheme>
 where
     Message: Clone + 'a,
 {
-    banner(Severity::Info, None, body, on_dismiss)
+    banner(theme, Severity::Info, None, body, on_dismiss)
 }
 
-/// A warning-severity alert banner.
-pub fn warning<'a, Message>(body: impl Into<String>, on_dismiss: Option<Message>) -> Container<'a, Message, RustTheme>
+/// A warning-severity alert banner. Padding scales with `theme.spacing`.
+pub fn warning<'a, Message>(theme: &RustTheme, body: impl Into<String>, on_dismiss: Option<Message>) -> Container<'a, Message, RustTheme>
 where
     Message: Clone + 'a,
 {
-    banner(Severity::Warning, None, body, on_dismiss)
+    banner(theme, Severity::Warning, None, body, on_dismiss)
 }
 
-/// An error-severity alert banner.
-pub fn error<'a, Message>(body: impl Into<String>, on_dismiss: Option<Message>) -> Container<'a, Message, RustTheme>
+/// An error-severity alert banner. Padding scales with `theme.spacing`.
+pub fn error<'a, Message>(theme: &RustTheme, body: impl Into<String>, on_dismiss: Option<Message>) -> Container<'a, Message, RustTheme>
 where
     Message: Clone + 'a,
 {
-    banner(Severity::Error, None, body, on_dismiss)
+    banner(theme, Severity::Error, None, body, on_dismiss)
 }
 
-/// A severity alert banner with a title above the body text.
+/// A severity alert banner with a title above the body text. Padding scales with `theme.spacing`.
 pub fn with_title<'a, Message>(
+    theme: &RustTheme,
     severity: Severity,
     title: impl Into<String>,
     body: impl Into<String>,
@@ -112,7 +114,7 @@ pub fn with_title<'a, Message>(
 where
     Message: Clone + 'a,
 {
-    banner(severity, Some(title.into()), body, on_dismiss)
+    banner(theme, severity, Some(title.into()), body, on_dismiss)
 }
 
 /// Returns the [`rustheme_core::ColorSet`] for each MUI severity, read from `theme`.

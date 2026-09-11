@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>System Components — Design Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        },
+        colors: {
+          accent: {
+            50: '#eef2ff',
+            100: '#e0e7ff',
+            200: '#c7d2fe',
+            300: '#a5b4fc',
+            400: '#818cf8',
+            500: '#6366f1',
+            600: '#4f46e5',
+            700: '#4338ca',
+            800: '#3730a3',
+          },
+        },
+        boxShadow: {
+          card: '0 1px 2px 0 rgba(15, 23, 42, 0.04), 0 1px 8px -2px rgba(15, 23, 42, 0.06)',
+          pop: '0 4px 16px -4px rgba(15, 23, 42, 0.12), 0 2px 6px -2px rgba(15, 23, 42, 0.08)',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .label-tag {
+    letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased">
+
+  <!-- Top chrome bar -->
+  <div class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="h-6 w-6 rounded-md bg-slate-900 flex items-center justify-center">
+          <span class="text-white text-[10px] font-mono font-semibold">RT</span>
+        </div>
+        <span class="font-mono text-xs text-slate-500 label-tag">rustheme / design-system / components</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-4 font-mono text-xs text-slate-400">
+        <span class="flex items-center gap-1.5">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+          v0.4.2
+        </span>
+        <span>light</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+
+    <!-- Header -->
+    <header class="mb-8 sm:mb-10 lg:mb-12">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="font-mono text-[11px] label-tag uppercase text-accent-600 bg-accent-50 border border-accent-200 rounded-md px-2 py-1">Design System</span>
+        <span class="font-mono text-[11px] label-tag uppercase text-slate-500 bg-slate-100 border border-slate-200 rounded-md px-2 py-1">Reference Sheet</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-slate-900">System Components</h1>
+      <p class="mt-2 text-sm sm:text-base text-slate-500 max-w-2xl">
+        Canonical states and variants for inputs, dropdowns, search, and buttons — the base primitives that power the themed app shell.
+      </p>
+    </header>
+
+    <!-- Grid of cards -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+
+      <!-- ============ INPUTS CARD ============ -->
+      <section class="bg-white border border-slate-200 rounded-xl shadow-card p-5 sm:p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-sm font-semibold text-slate-900">Text Inputs</h2>
+          <span class="font-mono text-[11px] text-slate-400 label-tag">08 / TEXT-FIELD</span>
+        </div>
+
+        <div class="space-y-5">
+
+          <!-- Default -->
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">Full name</label>
+            <input type="text" placeholder="Jane Cooper"
+              class="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition" />
+            <p class="mt-1.5 text-xs text-slate-400">This will appear on your public profile.</p>
+          </div>
+
+          <!-- Focused (simulated) -->
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">Email address</label>
+            <input type="text" value="jane.cooper@company.com"
+              class="w-full h-10 px-3 rounded-lg border border-accent-500 bg-white text-sm text-slate-900 shadow-sm ring-2 ring-accent-500/30 focus:outline-none" />
+            <p class="mt-1.5 text-xs text-accent-600 font-mono">focus-visible state</p>
+          </div>
+
+          <!-- Filled + leading icon -->
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">Workspace URL</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </span>
+              <input type="text" value="rustheme.app/workspaces/core"
+                class="w-full h-10 pl-9 pr-3 rounded-lg border border-slate-300 bg-slate-50 text-sm text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition" />
+            </div>
+          </div>
+
+          <!-- Trailing icon -->
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">API key</label>
+            <div class="relative">
+              <input type="text" value="sk_live_4f2a9c7e1b3d"
+                class="w-full h-10 pl-3 pr-9 rounded-lg border border-slate-300 bg-white font-mono text-sm text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition" />
+              <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Error state -->
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">Password</label>
+            <div class="relative">
+              <input type="password" value="short"
+                class="w-full h-10 pl-3 pr-9 rounded-lg border border-red-500 bg-red-50/40 text-sm text-slate-900 shadow-sm ring-2 ring-red-500/20 focus:outline-none" />
+              <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-red-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </span>
+            </div>
+            <p class="mt-1.5 text-xs text-red-600 flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Password must be at least 8 characters
+            </p>
+          </div>
+
+          <!-- Disabled -->
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1.5">Organization ID</label>
+            <input type="text" value="org_9f81c2" disabled
+              class="w-full h-10 px-3 rounded-lg border border-slate-200 bg-slate-100 text-sm text-slate-400 cursor-not-allowed" />
+            <p class="mt-1.5 text-xs text-slate-400">Managed by your admin — cannot be edited.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ DROPDOWNS CARD ============ -->
+      <section class="bg-white border border-slate-200 rounded-xl shadow-card p-5 sm:p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-sm font-semibold text-slate-900">Dropdown / Select</h2>
+          <span class="font-mono text-[11px] text-slate-400 label-tag">04 / SELECT</span>
+        </div>
+
+        <div class="space-y-5">
+
+          <!-- Closed default -->
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">Environment</label>
+            <button type="button" class="w-full h-10 px-3 flex items-center justify-between rounded-lg border border-slate-300 bg-white text-sm text-slate-900 shadow-sm hover:border-slate-400 transition">
+              <span>Production</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+
+          <!-- Open state (mocked) -->
+          <div class="relative">
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">Region</label>
+            <button type="button" class="w-full h-10 px-3 flex items-center justify-between rounded-lg border border-accent-500 bg-white text-sm text-slate-900 shadow-sm ring-2 ring-accent-500/30">
+              <span>us-east-1 (N. Virginia)</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-accent-600 rotate-180 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="absolute z-10 mt-1.5 w-full rounded-lg border border-slate-200 bg-white shadow-pop overflow-hidden">
+              <ul class="py-1 text-sm max-h-52 overflow-auto">
+                <li class="px-3 py-2 flex items-center justify-between bg-accent-50 text-accent-700 font-medium cursor-pointer">
+                  us-east-1 (N. Virginia)
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </li>
+                <li class="px-3 py-2 text-slate-700 hover:bg-slate-50 cursor-pointer">us-west-2 (Oregon)</li>
+                <li class="px-3 py-2 text-slate-700 hover:bg-slate-50 cursor-pointer">eu-central-1 (Frankfurt)</li>
+                <li class="px-3 py-2 text-slate-700 hover:bg-slate-50 cursor-pointer">ap-southeast-1 (Singapore)</li>
+                <li class="px-3 py-2 text-slate-400 cursor-not-allowed flex items-center justify-between">
+                  sa-east-1 (São Paulo)
+                  <span class="font-mono text-[10px] uppercase bg-slate-100 border border-slate-200 rounded px-1.5 py-0.5">soon</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Spacer to offset the open dropdown's overlay height on smaller screens -->
+          <div class="hidden lg:block h-32"></div>
+
+          <!-- Disabled select -->
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1.5">Billing plan</label>
+            <button type="button" disabled class="w-full h-10 px-3 flex items-center justify-between rounded-lg border border-slate-200 bg-slate-100 text-sm text-slate-400 cursor-not-allowed">
+              <span>Enterprise (contact sales)</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ SEARCH CARD ============ -->
+      <section class="bg-white border border-slate-200 rounded-xl shadow-card p-5 sm:p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-sm font-semibold text-slate-900">Search Bar</h2>
+          <span class="font-mono text-[11px] text-slate-400 label-tag">02 / SEARCH</span>
+        </div>
+
+        <div class="space-y-5">
+
+          <!-- Default with icon + clear -->
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">Search components</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </span>
+              <input type="text" value="button variants"
+                class="w-full h-10 pl-9 pr-9 rounded-lg border border-slate-300 bg-white text-sm text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition" />
+              <button type="button" aria-label="Clear search" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Empty placeholder state -->
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">Global search</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </span>
+              <input type="text" placeholder="Search docs, tokens, components…"
+                class="w-full h-10 pl-9 pr-16 rounded-lg border border-slate-300 bg-slate-50 text-sm text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition" />
+              <span class="absolute inset-y-0 right-0 flex items-center pr-3 gap-1">
+                <kbd class="font-mono text-[10px] text-slate-500 bg-white border border-slate-200 rounded px-1.5 py-0.5">⌘K</kbd>
+              </span>
+            </div>
+          </div>
+
+          <!-- Compact/pill variant -->
+          <div>
+            <label class="block text-xs font-medium text-slate-700 mb-1.5">Compact filter</label>
+            <div class="relative max-w-xs">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </span>
+              <input type="text" placeholder="Filter table…"
+                class="w-full h-8 pl-8 pr-3 rounded-full border border-slate-300 bg-white text-xs text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/30 focus:border-accent-500 transition" />
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ BUTTONS CARD ============ -->
+      <section class="bg-white border border-slate-200 rounded-xl shadow-card p-5 sm:p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-sm font-semibold text-slate-900">Buttons</h2>
+          <span class="font-mono text-[11px] text-slate-400 label-tag">12 / BUTTON</span>
+        </div>
+
+        <div class="space-y-6">
+
+          <!-- Primary -->
+          <div>
+            <p class="font-mono text-[11px] text-slate-400 label-tag uppercase mb-2">Primary</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="h-8 px-3 rounded-lg bg-accent-600 text-white text-xs font-medium shadow-sm hover:bg-accent-700 transition">Small</button>
+              <button class="h-10 px-4 rounded-lg bg-accent-600 text-white text-sm font-medium shadow-sm hover:bg-accent-700 transition">Medium</button>
+              <button class="h-12 px-5 rounded-lg bg-accent-600 text-white text-base font-medium shadow-sm hover:bg-accent-700 transition">Large</button>
+            </div>
+          </div>
+
+          <!-- Secondary -->
+          <div>
+            <p class="font-mono text-[11px] text-slate-400 label-tag uppercase mb-2">Secondary</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="h-8 px-3 rounded-lg bg-slate-900 text-white text-xs font-medium shadow-sm hover:bg-slate-800 transition">Small</button>
+              <button class="h-10 px-4 rounded-lg bg-slate-900 text-white text-sm font-medium shadow-sm hover:bg-slate-800 transition">Medium</button>
+              <button class="h-12 px-5 rounded-lg bg-slate-900 text-white text-base font-medium shadow-sm hover:bg-slate-800 transition">Large</button>
+            </div>
+          </div>
+
+          <!-- Outline -->
+          <div>
+            <p class="font-mono text-[11px] text-slate-400 label-tag uppercase mb-2">Outline</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="h-8 px-3 rounded-lg border border-slate-300 bg-white text-slate-900 text-xs font-medium shadow-sm hover:border-slate-400 hover:bg-slate-50 transition">Small</button>
+              <button class="h-10 px-4 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm font-medium shadow-sm hover:border-slate-400 hover:bg-slate-50 transition">Medium</button>
+              <button class="h-12 px-5 rounded-lg border border-slate-300 bg-white text-slate-900 text-base font-medium shadow-sm hover:border-slate-400 hover:bg-slate-50 transition">Large</button>
+            </div>
+          </div>
+
+          <!-- Ghost / text -->
+          <div>
+            <p class="font-mono text-[11px] text-slate-400 label-tag uppercase mb-2">Ghost / Text</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="h-8 px-3 rounded-lg text-accent-700 text-xs font-medium hover:bg-accent-50 transition">Small</button>
+              <button class="h-10 px-4 rounded-lg text-accent-700 text-sm font-medium hover:bg-accent-50 transition">Medium</button>
+              <button class="h-12 px-5 rounded-lg text-accent-700 text-base font-medium hover:bg-accent-50 transition">Large</button>
+            </div>
+          </div>
+
+          <!-- Destructive -->
+          <div>
+            <p class="font-mono text-[11px] text-slate-400 label-tag uppercase mb-2">Destructive</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="h-8 px-3 rounded-lg bg-red-600 text-white text-xs font-medium shadow-sm hover:bg-red-700 transition">Small</button>
+              <button class="h-10 px-4 rounded-lg bg-red-600 text-white text-sm font-medium shadow-sm hover:bg-red-700 transition">Medium</button>
+              <button class="h-12 px-5 rounded-lg bg-red-600 text-white text-base font-medium shadow-sm hover:bg-red-700 transition">Large</button>
+            </div>
+          </div>
+
+          <!-- Disabled -->
+          <div>
+            <p class="font-mono text-[11px] text-slate-400 label-tag uppercase mb-2">Disabled</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <button disabled class="h-8 px-3 rounded-lg bg-slate-100 text-slate-400 text-xs font-medium cursor-not-allowed">Small</button>
+              <button disabled class="h-10 px-4 rounded-lg bg-slate-100 text-slate-400 text-sm font-medium cursor-not-allowed">Medium</button>
+              <button disabled class="h-12 px-5 rounded-lg bg-slate-100 text-slate-400 text-base font-medium cursor-not-allowed">Large</button>
+            </div>
+          </div>
+
+          <!-- Icon buttons row -->
+          <div>
+            <p class="font-mono text-[11px] text-slate-400 label-tag uppercase mb-2">With icon</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="h-10 px-4 rounded-lg bg-accent-600 text-white text-sm font-medium shadow-sm hover:bg-accent-700 transition inline-flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New component
+              </button>
+              <button class="h-10 px-4 rounded-lg border border-slate-300 bg-white text-slate-900 text-sm font-medium shadow-sm hover:bg-slate-50 transition inline-flex items-center gap-2">
+                Export
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-10 lg:mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <p class="font-mono text-xs text-slate-400">rustheme-core · tokens: palette / typography / spacing / shape</p>
+      <p class="font-mono text-xs text-slate-400">generated as static reference — not connected to app state</p>
+    </footer>
+
+  </main>
+
+</body>
+</html>

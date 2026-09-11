@@ -18,7 +18,7 @@ pub fn default() -> StyleFn<'static, RustTheme> {
             scroller: Scroller {
                 color: scroller_color,
                 border: Border {
-                    radius: 4.0.into(),
+                    radius: theme.shape.full.into(),
                     width: 0.0,
                     color: Color::TRANSPARENT,
                 },

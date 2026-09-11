@@ -7,8 +7,10 @@ use rustheme_core::{system_font, FontWeight};
 
 /// A star rating row. `value` is the current rating (stars `<= value` render
 /// filled); `max` is the star count (MUI default is 5); `on_rate` maps a
-/// clicked star's 1-based position to a `Message`.
+/// clicked star's 1-based position to a `Message`. Padding scales with
+/// `theme.spacing`.
 pub fn rating<'a, Message>(
+    theme: &RustTheme,
     value: u8,
     max: u8,
     on_rate: impl Fn(u8) -> Message + 'a,
@@ -24,7 +26,7 @@ where
         let message = on_rate(i);
         row = row.push(
             iced::widget::button(iced::widget::text(glyph).size(22).font(system_font(FontWeight::Regular)))
-                .padding(2)
+                .padding(theme.spacing.unit(0.25))
                 .on_press(message)
                 .style(move |theme: &RustTheme, status| {
                     let p = &theme.palette;

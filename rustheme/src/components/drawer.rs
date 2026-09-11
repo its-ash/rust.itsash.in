@@ -16,6 +16,7 @@ pub enum Anchor {
 /// Overlays a `content` sidebar panel over `base_content` when `is_open`,
 /// anchored to `anchor`. Clicking the scrim behind it fires `on_dismiss`.
 pub fn drawer<'a, Message>(
+    theme: &RustTheme,
     base_content: impl Into<Element<'a, Message, RustTheme>>,
     is_open: bool,
     anchor: Anchor,
@@ -31,7 +32,7 @@ where
     }
 
     let panel = iced::widget::container(content)
-        .padding(20)
+        .padding(theme.spacing.unit(2.5))
         .width(Length::Fixed(280.0))
         .height(Length::Fill)
         .style(|theme| crate::style::container::elevated()(theme));

@@ -10,8 +10,9 @@ use crate::theme::RustTheme;
 use rustheme_core::{system_font, FontWeight};
 
 /// An accordion section. `is_expanded` controls whether `body` renders;
-/// clicking the header fires `on_toggle`.
+/// clicking the header fires `on_toggle`. Padding scales with `theme.spacing`.
 pub fn accordion<'a, Message>(
+    theme: &RustTheme,
     title: impl Into<String>,
     body: impl Into<Element<'a, Message, RustTheme>>,
     is_expanded: bool,
@@ -29,7 +30,7 @@ where
         ]
         .align_y(iced::alignment::Vertical::Center),
     )
-    .padding([12, 16])
+    .padding([theme.spacing.unit(1.5), theme.spacing.unit(2.0)])
     .width(iced::Length::Fill)
     .on_press(on_toggle)
     .style(|theme: &RustTheme, status| {
@@ -53,7 +54,7 @@ where
     if is_expanded {
         col = col.push(
             iced::widget::container(body)
-                .padding([12, 16])
+                .padding([theme.spacing.unit(1.5), theme.spacing.unit(2.0)])
                 .width(iced::Length::Fill)
                 .style(|theme: &RustTheme| iced::widget::container::Style {
                     background: Some(iced::Background::Color(theme.palette.background.paper)),

@@ -20,7 +20,7 @@ pub fn outlined() -> StyleFn<'static, RustTheme> {
             border: Border {
                 color: border_color,
                 width: 1.0,
-                radius: theme.shape.border_radius.into(),
+                radius: theme.shape.extra_small.into(),
             },
         }
     })

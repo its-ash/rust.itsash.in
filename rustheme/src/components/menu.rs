@@ -10,6 +10,7 @@ use rustheme_core::{system_font, FontWeight};
 /// `on_select` maps a clicked item index to a `Message`; `on_dismiss` fires
 /// when the scrim behind the menu is clicked.
 pub fn menu<'a, Message>(
+    theme: &RustTheme,
     base_content: impl Into<Element<'a, Message, RustTheme>>,
     is_open: bool,
     items: &[&'a str],
@@ -30,7 +31,7 @@ where
         list = list.push(
             iced::widget::button(iced::widget::text(*label).font(system_font(FontWeight::Regular)))
                 .width(Length::Fill)
-                .padding([8, 16])
+                .padding([theme.spacing.unit(1.0), theme.spacing.unit(2.0)])
                 .on_press(message)
                 .style(|theme: &RustTheme, status| {
                     let p = &theme.palette;
@@ -59,5 +60,5 @@ where
     )
     .on_press(on_dismiss);
 
-    stack![base, scrim, iced::widget::container(popover).padding(4)].into()
+    stack![base, scrim, iced::widget::container(popover).padding(theme.spacing.unit(0.5))].into()
 }

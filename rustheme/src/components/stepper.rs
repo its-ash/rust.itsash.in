@@ -39,7 +39,8 @@ where
 
 /// A horizontal stepper. `labels` are the step titles; `active` is the
 /// current 0-based step index — steps before it render as completed.
-pub fn stepper<'a, Message>(labels: &[&'a str], active: usize) -> Row<'a, Message, RustTheme>
+/// Padding scales with `theme.spacing`.
+pub fn stepper<'a, Message>(theme: &RustTheme, labels: &[&'a str], active: usize) -> Row<'a, Message, RustTheme>
 where
     Message: 'a,
 {
@@ -66,7 +67,7 @@ where
                     .padding(iced::Padding {
                         top: 0.0,
                         right: 0.0,
-                        bottom: 14.0,
+                        bottom: theme.spacing.unit(1.75),
                         left: 0.0,
                     }),
             );

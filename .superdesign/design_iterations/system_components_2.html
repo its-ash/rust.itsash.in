@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>System Components — Dark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#0a0a0a',
+          surface: '#111113',
+          surface2: '#17171a',
+          border: '#26262b',
+          border2: '#323238',
+          accent: '#39ff9d',
+          accentDim: '#1c8c58',
+          error: '#ff5c5c',
+        },
+        fontFamily: {
+          mono: ['"JetBrains Mono"', 'monospace'],
+          sans: ['Inter', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+<style>
+  body { background-color: #0a0a0a; }
+  .glow-border {
+    box-shadow: 0 0 0 1px #26262b, 0 8px 24px -12px rgba(0,0,0,0.6);
+  }
+  .glow-accent {
+    box-shadow: 0 0 0 3px rgba(57,255,157,0.15), 0 0 24px -4px rgba(57,255,157,0.25);
+  }
+  .scanline {
+    background-image: linear-gradient(180deg, rgba(57,255,157,0.06), transparent);
+  }
+</style>
+</head>
+<body class="min-h-screen bg-bg text-white font-sans antialiased">
+
+  <!-- Header -->
+  <header class="border-b border-border bg-surface/60 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-2">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-md bg-accent/10 border border-accent/30 flex items-center justify-center">
+            <span class="font-mono text-accent text-xs font-bold">rt</span>
+          </div>
+          <div>
+            <h1 class="font-mono text-sm sm:text-base font-semibold tracking-tight text-white">RustTheme / Components</h1>
+            <p class="text-xs text-white/50 font-mono mt-0.5">v0.4.2 — dark-mode developer console preview</p>
+          </div>
+        </div>
+        <div class="hidden md:flex items-center gap-2 font-mono text-xs text-white/40">
+          <span class="w-2 h-2 rounded-full bg-accent shadow-[0_0_8px_rgba(57,255,157,0.8)]"></span>
+          <span>system online</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col gap-8 sm:gap-12">
+
+    <!-- Page intro -->
+    <section class="flex flex-col gap-2">
+      <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Form &amp; input primitives</h2>
+      <p class="text-sm sm:text-base text-white/50 max-w-2xl font-sans">A reference sheet of text inputs, dropdowns, search, and buttons — states, sizes, and variants used to theme downstream applications.</p>
+    </section>
+
+    <!-- Grid of cards -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+
+      <!-- Inputs Card -->
+      <section class="glow-border bg-surface rounded-lg p-6 sm:p-8 flex flex-col gap-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase">Inputs</h3>
+          <span class="font-mono text-[10px] text-white/30">08 states</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+          <!-- Default -->
+          <div class="flex flex-col gap-1.5">
+            <label class="font-mono text-xs text-white/70">Project name</label>
+            <input type="text" placeholder="e.g. rustheme-core"
+              class="w-full rounded-md bg-surface2 border border-border text-sm text-white placeholder-white/30 px-3 py-2.5 outline-none transition focus:border-accent focus:glow-accent font-sans" />
+            <span class="text-xs text-white/40 font-sans">Used as the crate identifier.</span>
+          </div>
+
+          <!-- Focused -->
+          <div class="flex flex-col gap-1.5">
+            <label class="font-mono text-xs text-accent">API token</label>
+            <input type="text" value="sk_live_9f2a...c31d"
+              class="w-full rounded-md bg-surface2 border border-accent text-sm text-white px-3 py-2.5 outline-none glow-accent font-sans" />
+            <span class="text-xs text-white/40 font-sans">Focused state — accent ring active.</span>
+          </div>
+
+          <!-- Filled -->
+          <div class="flex flex-col gap-1.5">
+            <label class="font-mono text-xs text-white/70">Workspace</label>
+            <input type="text" value="shurutech-prod"
+              class="w-full rounded-md bg-surface2 border border-border2 text-sm text-white px-3 py-2.5 outline-none font-sans" />
+            <span class="text-xs text-white/40 font-sans">Filled — value already committed.</span>
+          </div>
+
+          <!-- Disabled -->
+          <div class="flex flex-col gap-1.5">
+            <label class="font-mono text-xs text-white/30">Region (locked)</label>
+            <input type="text" value="us-east-1" disabled
+              class="w-full rounded-md bg-surface border border-border text-sm text-white/30 px-3 py-2.5 outline-none cursor-not-allowed font-sans" />
+            <span class="text-xs text-white/25 font-sans">Disabled — managed by org policy.</span>
+          </div>
+
+          <!-- Error -->
+          <div class="flex flex-col gap-1.5">
+            <label class="font-mono text-xs text-error">Webhook URL</label>
+            <input type="text" value="htp:/broken-url"
+              class="w-full rounded-md bg-surface2 border border-error text-sm text-white px-3 py-2.5 outline-none shadow-[0_0_0_3px_rgba(255,92,92,0.15)] font-sans" />
+            <div class="flex items-center gap-1.5 text-xs text-error font-sans">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+              <span>Must start with http:// or https://</span>
+            </div>
+          </div>
+
+          <!-- Leading icon -->
+          <div class="flex flex-col gap-1.5">
+            <label class="font-mono text-xs text-white/70">Owner email</label>
+            <div class="relative">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <input type="text" placeholder="ashvini@shurutech.com"
+                class="w-full rounded-md bg-surface2 border border-border text-sm text-white placeholder-white/30 pl-9 pr-3 py-2.5 outline-none transition focus:border-accent focus:glow-accent font-sans" />
+            </div>
+            <span class="text-xs text-white/40 font-sans">Leading icon example.</span>
+          </div>
+
+          <!-- Trailing icon -->
+          <div class="flex flex-col gap-1.5 sm:col-span-2">
+            <label class="font-mono text-xs text-white/70">Password</label>
+            <div class="relative">
+              <input type="password" value="••••••••••••"
+                class="w-full rounded-md bg-surface2 border border-border text-sm text-white pl-3 pr-9 py-2.5 outline-none transition focus:border-accent focus:glow-accent font-sans" />
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 text-white/40" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <span class="text-xs text-white/40 font-sans">Trailing icon — visibility toggle.</span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Dropdowns Card -->
+      <section class="glow-border bg-surface rounded-lg p-6 sm:p-8 flex flex-col gap-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase">Dropdown / Select</h3>
+          <span class="font-mono text-[10px] text-white/30">02 states</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+          <!-- Closed -->
+          <div class="flex flex-col gap-1.5">
+            <label class="font-mono text-xs text-white/70">Environment</label>
+            <button class="w-full flex items-center justify-between rounded-md bg-surface2 border border-border text-sm text-white px-3 py-2.5 font-sans hover:border-border2 transition">
+              <span>Production</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/40"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <span class="text-xs text-white/40 font-sans">Closed / default state.</span>
+          </div>
+
+          <!-- Open -->
+          <div class="flex flex-col gap-1.5 relative">
+            <label class="font-mono text-xs text-accent">Deploy target</label>
+            <button class="w-full flex items-center justify-between rounded-md bg-surface2 border border-accent text-sm text-white px-3 py-2.5 font-sans glow-accent">
+              <span>us-west-2 / edge</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="absolute top-[68px] left-0 right-0 z-30 rounded-md border border-border2 bg-surface2 glow-border overflow-hidden font-sans">
+              <ul class="text-sm">
+                <li class="flex items-center justify-between px-3 py-2.5 bg-accent/10 text-accent">
+                  <span>us-west-2 / edge</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </li>
+                <li class="px-3 py-2.5 text-white/80 hover:bg-white/5 border-t border-border">us-east-1 / core</li>
+                <li class="px-3 py-2.5 text-white/80 hover:bg-white/5 border-t border-border">eu-central-1 / core</li>
+                <li class="px-3 py-2.5 text-white/30 border-t border-border cursor-not-allowed flex items-center justify-between">
+                  <span>ap-south-1 / beta</span>
+                  <span class="text-[10px] font-mono border border-border2 rounded px-1.5 py-0.5">soon</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- spacer to keep card height consistent with open menu -->
+        <div class="h-32 sm:h-0"></div>
+      </section>
+
+      <!-- Search Card -->
+      <section class="glow-border bg-surface rounded-lg p-6 sm:p-8 flex flex-col gap-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase">Search</h3>
+          <span class="font-mono text-[10px] text-white/30">shortcut-aware</span>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" placeholder="Search components, tokens, docs…"
+              class="w-full rounded-md bg-surface2 border border-border text-sm text-white placeholder-white/30 pl-9 pr-24 py-3 outline-none transition focus:border-accent focus:glow-accent font-sans" />
+            <div class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+              <button class="text-white/30 hover:text-white/60 transition" aria-label="Clear search">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
+              <kbd class="font-mono text-[10px] text-white/50 border border-border2 rounded px-1.5 py-1 leading-none">⌘K</kbd>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 font-mono text-xs">
+            <span class="px-2.5 py-1 rounded-full border border-border2 text-white/50">buttons</span>
+            <span class="px-2.5 py-1 rounded-full border border-accent/40 text-accent bg-accent/5">inputs</span>
+            <span class="px-2.5 py-1 rounded-full border border-border2 text-white/50">tokens</span>
+            <span class="px-2.5 py-1 rounded-full border border-border2 text-white/50">theme.rs</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Buttons Card -->
+      <section class="glow-border bg-surface rounded-lg p-6 sm:p-8 flex flex-col gap-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-mono text-xs font-semibold tracking-widest text-white/50 uppercase">Buttons</h3>
+          <span class="font-mono text-[10px] text-white/30">6 variants × 2 sizes</span>
+        </div>
+
+        <div class="flex flex-col gap-5">
+
+          <!-- Primary -->
+          <div class="flex flex-col gap-2">
+            <span class="font-mono text-[11px] text-white/40">primary</span>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="rounded-md bg-accent text-black font-semibold text-sm px-4 py-2 hover:bg-accent/90 transition shadow-[0_0_16px_-2px_rgba(57,255,157,0.5)]">Deploy build</button>
+              <button class="rounded-md bg-accent text-black font-semibold text-xs px-3 py-1.5 hover:bg-accent/90 transition shadow-[0_0_12px_-2px_rgba(57,255,157,0.4)]">Deploy</button>
+            </div>
+          </div>
+
+          <!-- Secondary -->
+          <div class="flex flex-col gap-2">
+            <span class="font-mono text-[11px] text-white/40">secondary</span>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="rounded-md bg-surface2 border border-border2 text-white font-semibold text-sm px-4 py-2 hover:bg-white/5 transition">Save draft</button>
+              <button class="rounded-md bg-surface2 border border-border2 text-white font-semibold text-xs px-3 py-1.5 hover:bg-white/5 transition">Save</button>
+            </div>
+          </div>
+
+          <!-- Outline -->
+          <div class="flex flex-col gap-2">
+            <span class="font-mono text-[11px] text-white/40">outline</span>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="rounded-md bg-transparent border border-accent text-accent font-semibold text-sm px-4 py-2 hover:bg-accent/10 transition">View logs</button>
+              <button class="rounded-md bg-transparent border border-accent text-accent font-semibold text-xs px-3 py-1.5 hover:bg-accent/10 transition">Logs</button>
+            </div>
+          </div>
+
+          <!-- Ghost -->
+          <div class="flex flex-col gap-2">
+            <span class="font-mono text-[11px] text-white/40">ghost / text</span>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="rounded-md bg-transparent text-white/70 font-semibold text-sm px-4 py-2 hover:bg-white/5 hover:text-white transition">Cancel</button>
+              <button class="rounded-md bg-transparent text-white/70 font-semibold text-xs px-3 py-1.5 hover:bg-white/5 hover:text-white transition">Cancel</button>
+            </div>
+          </div>
+
+          <!-- Destructive -->
+          <div class="flex flex-col gap-2">
+            <span class="font-mono text-[11px] text-white/40">destructive</span>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="rounded-md bg-error text-white font-semibold text-sm px-4 py-2 hover:bg-error/90 transition shadow-[0_0_16px_-4px_rgba(255,92,92,0.5)]">Delete workspace</button>
+              <button class="rounded-md bg-error text-white font-semibold text-xs px-3 py-1.5 hover:bg-error/90 transition">Delete</button>
+            </div>
+          </div>
+
+          <!-- Disabled -->
+          <div class="flex flex-col gap-2">
+            <span class="font-mono text-[11px] text-white/40">disabled</span>
+            <div class="flex flex-wrap items-center gap-3">
+              <button disabled class="rounded-md bg-surface2 border border-border text-white/25 font-semibold text-sm px-4 py-2 cursor-not-allowed">Deploy build</button>
+              <button disabled class="rounded-md bg-surface2 border border-border text-white/25 font-semibold text-xs px-3 py-1.5 cursor-not-allowed">Deploy</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <footer class="border-t border-border pt-6 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+      <p class="font-mono text-[11px] text-white/30">rustheme-core · design-token reference · generated preview</p>
+      <p class="font-mono text-[11px] text-white/30">theme: dark · accent: electric-green</p>
+    </footer>
+
+  </main>
+
+</body>
+</html>

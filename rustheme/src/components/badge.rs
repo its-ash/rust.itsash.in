@@ -79,7 +79,7 @@ where
     .into()
 }
 
-fn pill<'a, Message>(text: String, color: Color) -> Container<'a, Message, RustTheme>
+fn pill<'a, Message>(theme: &RustTheme, text: String, color: Color) -> Container<'a, Message, RustTheme>
 where
     Message: 'a,
 {
@@ -89,7 +89,7 @@ where
             .font(system_font(FontWeight::Medium))
             .align_x(iced::alignment::Horizontal::Center),
     )
-    .padding([1, 6])
+    .padding([theme.spacing.unit(0.125), theme.spacing.unit(0.75)])
     .style(move |theme: &RustTheme| {
         let set = color.resolve(theme);
         iced::widget::container::Style {
@@ -103,8 +103,9 @@ where
 
 /// Overlays a numeric count badge, inset into `position`, on `content`. A
 /// count of `0` renders no badge; counts above `max` render as `"{max}+"`
-/// (MUI's default `max` is 99).
+/// (MUI's default `max` is 99). Padding scales with `theme.spacing`.
 pub fn count<'a, Message>(
+    theme: &RustTheme,
     content: impl Into<Element<'a, Message, RustTheme>>,
     count: u32,
     max: u32,
@@ -118,20 +119,21 @@ where
         return content.into();
     }
     let label = if count > max { format!("{max}+") } else { count.to_string() };
-    positioned(content.into(), pill(label, color).into(), position)
+    positioned(content.into(), pill(theme, label, color).into(), position)
 }
 
 /// Overlays a numeric count badge on the top-right corner with the default
 /// `error` color and a max of 99 — the common case, matching this
-/// function's previous signature.
+/// function's previous signature. Padding scales with `theme.spacing`.
 pub fn simple_count<'a, Message>(
+    theme: &RustTheme,
     content: impl Into<Element<'a, Message, RustTheme>>,
     count: u32,
 ) -> Element<'a, Message, RustTheme>
 where
     Message: 'a,
 {
-    self::count(content, count, 99, Color::Error, Position::TopRight)
+    self::count(theme, content, count, 99, Color::Error, Position::TopRight)
 }
 
 /// Overlays a small colored dot (no label), inset into `position`, on
@@ -165,10 +167,10 @@ where
 
 /// A standalone badge pill with no anchored content, MUI's
 /// `variant="standard"` used on its own (e.g. next to a nav label rather
-/// than overlaid on an icon).
-pub fn standard<'a, Message>(label: impl Into<String>, color: Color) -> Container<'a, Message, RustTheme>
+/// than overlaid on an icon). Padding scales with `theme.spacing`.
+pub fn standard<'a, Message>(theme: &RustTheme, label: impl Into<String>, color: Color) -> Container<'a, Message, RustTheme>
 where
     Message: 'a,
 {
-    pill(label.into(), color)
+    pill(theme, label.into(), color)
 }

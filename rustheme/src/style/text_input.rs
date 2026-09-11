@@ -18,7 +18,7 @@ pub fn outlined() -> StyleFn<'static, RustTheme> {
             border: Border {
                 color: border_color,
                 width: if matches!(status, Status::Focused) { 2.0 } else { 1.0 },
-                radius: theme.shape.border_radius.into(),
+                radius: theme.shape.extra_small.into(),
             },
             icon: p.text.secondary,
             placeholder: p.text.disabled,
@@ -51,7 +51,7 @@ pub fn filled() -> StyleFn<'static, RustTheme> {
                     Color::TRANSPARENT
                 },
                 width: if matches!(status, Status::Focused) { 2.0 } else { 0.0 },
-                radius: theme.shape.border_radius.into(),
+                radius: theme.shape.extra_small.into(),
             },
             icon: p.text.secondary,
             placeholder: p.text.disabled,

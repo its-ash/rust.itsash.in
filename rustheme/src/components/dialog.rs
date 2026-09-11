@@ -6,8 +6,10 @@ use iced::{Element, Length};
 use crate::theme::RustTheme;
 use rustheme_core::{heading_font, FontWeight};
 
-/// Overlays a modal dialog over `base_content` when `is_open`.
+/// Overlays a modal dialog over `base_content` when `is_open`. Padding
+/// scales with `theme.spacing`.
 pub fn dialog<'a, Message>(
+    theme: &RustTheme,
     base_content: impl Into<Element<'a, Message, RustTheme>>,
     is_open: bool,
     title: impl Into<String>,
@@ -29,15 +31,25 @@ where
 
     let panel = iced::widget::container(
         iced::widget::column![
-            iced::widget::text(title.into()).size(20).font(heading_font(FontWeight::Bold)),
+            iced::widget::text(title.into()).size(22).font(heading_font(FontWeight::Medium)),
             body.into(),
             iced::widget::row![iced::widget::horizontal_space(), action_row],
         ]
         .spacing(16),
     )
-    .padding(24)
+    .padding(theme.spacing.unit(3.0))
     .width(Length::Fixed(420.0))
-    .style(|theme| crate::style::container::elevated()(theme));
+    .style(|theme| {
+        let base = crate::style::container::elevated()(theme);
+        iced::widget::container::Style {
+            shadow: rustheme_core::Elevation::Level4.shadow(),
+            border: iced::Border {
+                radius: theme.shape.extra_large.into(),
+                ..base.border
+            },
+            ..base
+        }
+    });
 
     let scrim = iced::widget::container(iced::widget::Space::new(Length::Fill, Length::Fill))
         .width(Length::Fill)

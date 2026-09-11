@@ -8,4 +8,4 @@ publish = false
 [dependencies]
 rustheme = { path = "../../rustheme" }
 rustheme-core = { path = "../../rustheme-core" }
-iced = "0.13"
+iced = { version = "0.13", features = ["tokio"] }

@@ -4,13 +4,13 @@ use iced::widget::{Column, Container};
 use iced::Element;
 use crate::theme::RustTheme;
 
-/// A single, padded list-item row.
-pub fn item<'a, Message>(content: impl Into<Element<'a, Message, RustTheme>>) -> Container<'a, Message, RustTheme>
+/// A single, padded list-item row. Padding scales with `theme.spacing`.
+pub fn item<'a, Message>(theme: &RustTheme, content: impl Into<Element<'a, Message, RustTheme>>) -> Container<'a, Message, RustTheme>
 where
     Message: 'a,
 {
     iced::widget::container(content)
-        .padding([10, 16])
+        .padding([theme.spacing.unit(1.25), theme.spacing.unit(2.0)])
         .width(iced::Length::Fill)
 }
 

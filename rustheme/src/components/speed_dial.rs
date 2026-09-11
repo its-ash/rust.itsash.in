@@ -21,6 +21,7 @@ impl<Message> SpeedDialAction<Message> {
 /// visually rotates in MUI — kept static here); `on_toggle` fires when the
 /// main FAB is pressed.
 pub fn speed_dial<'a, Message>(
+    theme: &RustTheme,
     main_glyph: impl iced::widget::text::IntoFragment<'a>,
     is_open: bool,
     actions: Vec<SpeedDialAction<Message>>,
@@ -33,11 +34,11 @@ where
 
     if is_open {
         for action in actions {
-            col = col.push(crate::components::fab::secondary(action.glyph, action.on_press));
+            col = col.push(crate::components::fab::secondary(theme, action.glyph, action.on_press));
         }
     }
 
-    col = col.push(crate::components::fab::primary(main_glyph, on_toggle));
+    col = col.push(crate::components::fab::primary(theme, main_glyph, on_toggle));
 
     col
 }

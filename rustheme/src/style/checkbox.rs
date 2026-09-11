@@ -24,7 +24,7 @@ pub fn primary() -> StyleFn<'static, RustTheme> {
             border: Border {
                 color: if is_checked { p.primary.main } else { p.text.secondary },
                 width: 2.0,
-                radius: (theme.shape.border_radius / 2.0).into(),
+                radius: (theme.shape.extra_small / 2.0).into(),
             },
             text_color: Some(p.text.primary),
         };
