@@ -14,10 +14,12 @@ RustTheme is not published to crates.io. Add it as a path or git dependency:
 ```toml
 # Cargo.toml
 [dependencies]
-rustheme = { git = "https://github.com/YOUR_USERNAME/rustheme" }
+rustheme = { git = "https://github.com/its-ash/rust.itsash.in" }
 # or, if vendored locally:
 # rustheme = { path = "../rustheme/rustheme" }
 ```
+
+Live component gallery: **[rust.itsash.in](https://rust.itsash.in)**
 
 ## Quick example
 
@@ -39,10 +41,12 @@ impl App {
     }
 
     fn view(&self) -> Element<'_, Message, RustTheme> {
+        let theme = self.theme();
         card::elevated(
+            &theme,
             iced::widget::column![
                 iced::widget::text("Settings"),
-                button::primary("Save", Message::Save),
+                button::primary(&theme, "Save", Message::Save),
             ]
             .spacing(12),
         )
@@ -51,10 +55,18 @@ impl App {
 }
 ```
 
-Run the full showcase:
+Run the full showcase natively:
 
 ```
 cargo run -p gallery
+# or: make run
+```
+
+Or in a browser (requires [trunk](https://trunkrs.dev) and the
+`wasm32-unknown-unknown` target):
+
+```
+cd examples/gallery && trunk serve
 ```
 
 ## Configuring the theme
@@ -267,11 +279,21 @@ so it can pick the right component and props without reading the source.
 ```
 rustheme-core/   Design tokens: Palette, Typography, Spacing, Shape.
 rustheme/        RustTheme type, iced Catalog impls, component library.
-examples/gallery/  Runnable showcase of every component.
+examples/gallery/  Runnable showcase of every component (native + web/wasm).
+docs/            Static build of the gallery (`make build`), served via
+                 GitHub Pages at rust.itsash.in.
 ```
 
 See `.github/copilot-instructions.md` (symlinked as `CLAUDE.md`) for
 conventions on adding new components.
+
+## Building & deploying the gallery
+
+`make build` compiles the workspace and bundles the `gallery` example to
+WebAssembly with [trunk](https://trunkrs.dev), writing the static site into
+`docs/` (with `.nojekyll` and `CNAME` for GitHub Pages). `make deploy` runs
+that build, then commits and pushes `docs/` to `main`, which GitHub Pages
+serves directly — no Actions workflow required.
 
 ## License
 

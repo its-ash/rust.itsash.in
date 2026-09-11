@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RustTheme Gallery</title>
+  <link rel="icon" href="favicon.png" />
+  <style>
+    html, body { margin: 0; height: 100%; background: #ffffff; }
+    canvas { display: block; }
+  </style>
+  
+<script type="module">
+import init, * as bindings from '/gallery-f476c797350ac6c9.js';
+const wasm = await init({ module_or_path: '/gallery-f476c797350ac6c9_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+  
+<link rel="modulepreload" href="/gallery-f476c797350ac6c9.js" crossorigin="anonymous" integrity="sha384-mP89GL1Qwloxto13bqTWCeVT/FfKohjgMyMa6WR/kIDCsDNWWgdXB1+VDxMRbg5k"><link rel="preload" href="/gallery-f476c797350ac6c9_bg.wasm" crossorigin="anonymous" integrity="sha384-oTbX1hFvORFq73oIz64NMjw/jwVrEEpREDoz/rRcqmbEDx0nS0JwanrrnM6pY96e" as="fetch" type="application/wasm"></head>
+<body></body>
+</html>

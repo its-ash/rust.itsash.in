@@ -45,7 +45,7 @@ where
     }
 
     if items.is_empty() {
-        return empty_state::empty_state(empty_icon, empty_title, empty_description, None::<(&str, Message)>).into();
+        return empty_state::empty_state(theme, empty_icon, empty_title, empty_description, None::<(&str, Message)>).into();
     }
 
     let grid: Column<'a, Message, RustTheme> = layout::grid(theme, columns, 2.0, items);

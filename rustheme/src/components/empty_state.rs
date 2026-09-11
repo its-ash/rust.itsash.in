@@ -10,6 +10,7 @@ use rustheme_core::{system_font, FontWeight};
 /// Builds an empty state with a semantic icon, title, supporting copy, and
 /// an optional primary action.
 pub fn empty_state<'a, Message>(
+    theme: &RustTheme,
     icon: Icon,
     title: impl Into<String>,
     description: impl Into<String>,
@@ -27,7 +28,7 @@ where
     .align_x(iced::alignment::Horizontal::Center);
 
     if let Some((label, message)) = action {
-        content = content.push(button::primary(label, message));
+        content = content.push(button::primary(theme, label, message));
     }
 
     iced::widget::container(content)

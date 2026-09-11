@@ -8,4 +8,11 @@ publish = false
 [dependencies]
 rustheme = { path = "../../rustheme" }
 rustheme-core = { path = "../../rustheme-core" }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 iced = { version = "0.13", features = ["tokio"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+iced = { version = "0.13", features = ["webgl"] }
+instant = { version = "0.1", features = ["wasm-bindgen"] }
+getrandom = { version = "0.2", features = ["js"] }

@@ -475,6 +475,7 @@ impl Gallery {
             &theme,
             "RustTheme Gallery",
             vec![button::text_button(
+                &theme,
                 if self.dark_mode { "Light mode" } else { "Dark mode" },
                 Message::ToggleDarkMode,
             )
@@ -517,7 +518,7 @@ impl Gallery {
                 iced::widget::text("Spacing density").size(12).font(system_font(FontWeight::Medium)),
                 Element::from(segmented::segmented(&SPACING_PRESETS, self.spacing_preset, Message::SpacingSelected)),
                 iced::widget::row![
-                    button::primary("Primary action", Message::PrimaryPressed),
+                    button::primary(&theme, "Primary action", Message::PrimaryPressed),
                     chip::filled(&theme, format!("{} radius", ["4px", "12px", "20px"][self.radius_preset])),
                     chip::filled(&theme, format!("{}px base spacing", [4.0, 8.0, 12.0][self.spacing_preset])),
                     card::outlined(&theme, iced::widget::text("Surface preview").font(system_font(FontWeight::Regular))),
@@ -658,9 +659,9 @@ impl Gallery {
                         .size(11)
                         .font(system_font(FontWeight::Medium)),
                     iced::widget::row![
-                        button::primary("Save", Message::PrimaryPressed),
-                        button::outline("Cancel", Message::PrimaryPressed),
-                        button::ghost("Discard", Message::PrimaryPressed),
+                        button::primary(&theme, "Save", Message::PrimaryPressed),
+                        button::outline(&theme, "Cancel", Message::PrimaryPressed),
+                        button::ghost(&theme, "Discard", Message::PrimaryPressed),
                     ]
                     .spacing(8)
                     .wrap(),
@@ -673,18 +674,21 @@ impl Gallery {
                         .font(system_font(FontWeight::Medium)),
                     iced::widget::row![
                         button::primary_with(
+                            &theme,
                             "Primary",
                             Message::PrimaryPressed,
                             button::Size::Small,
                             false,
                         ),
                         button::primary_with(
+                            &theme,
                             "Primary",
                             Message::PrimaryPressed,
                             button::Size::Default,
                             false,
                         ),
                         button::primary_with(
+                            &theme,
                             "Primary",
                             Message::PrimaryPressed,
                             button::Size::Large,
@@ -694,30 +698,30 @@ impl Gallery {
                     .spacing(8)
                     .wrap(),
                     iced::widget::row![
-                        button::secondary_with("Secondary", Message::PrimaryPressed, button::Size::Small, false),
-                        button::secondary_with("Secondary", Message::PrimaryPressed, button::Size::Default, false),
-                        button::secondary_with("Secondary", Message::PrimaryPressed, button::Size::Large, false),
+                        button::secondary_with(&theme, "Secondary", Message::PrimaryPressed, button::Size::Small, false),
+                        button::secondary_with(&theme, "Secondary", Message::PrimaryPressed, button::Size::Default, false),
+                        button::secondary_with(&theme, "Secondary", Message::PrimaryPressed, button::Size::Large, false),
                     ]
                     .spacing(8)
                     .wrap(),
                     iced::widget::row![
-                        button::outline_with("Outline", Message::PrimaryPressed, button::Size::Small, false),
-                        button::outline_with("Outline", Message::PrimaryPressed, button::Size::Default, false),
-                        button::outline_with("Outline", Message::PrimaryPressed, button::Size::Large, false),
+                        button::outline_with(&theme, "Outline", Message::PrimaryPressed, button::Size::Small, false),
+                        button::outline_with(&theme, "Outline", Message::PrimaryPressed, button::Size::Default, false),
+                        button::outline_with(&theme, "Outline", Message::PrimaryPressed, button::Size::Large, false),
                     ]
                     .spacing(8)
                     .wrap(),
                     iced::widget::row![
-                        button::ghost_with("Ghost", Message::PrimaryPressed, button::Size::Small, false),
-                        button::ghost_with("Ghost", Message::PrimaryPressed, button::Size::Default, false),
-                        button::ghost_with("Ghost", Message::PrimaryPressed, button::Size::Large, false),
+                        button::ghost_with(&theme, "Ghost", Message::PrimaryPressed, button::Size::Small, false),
+                        button::ghost_with(&theme, "Ghost", Message::PrimaryPressed, button::Size::Default, false),
+                        button::ghost_with(&theme, "Ghost", Message::PrimaryPressed, button::Size::Large, false),
                     ]
                     .spacing(8)
                     .wrap(),
                     iced::widget::row![
-                        button::destructive_with("Delete", Message::PrimaryPressed, button::Size::Small, false),
-                        button::destructive_with("Delete", Message::PrimaryPressed, button::Size::Default, false),
-                        button::destructive_with("Delete", Message::PrimaryPressed, button::Size::Large, false),
+                        button::destructive_with(&theme, "Delete", Message::PrimaryPressed, button::Size::Small, false),
+                        button::destructive_with(&theme, "Delete", Message::PrimaryPressed, button::Size::Default, false),
+                        button::destructive_with(&theme, "Delete", Message::PrimaryPressed, button::Size::Large, false),
                     ]
                     .spacing(8)
                     .wrap(),
@@ -730,18 +734,21 @@ impl Gallery {
                         .font(system_font(FontWeight::Medium)),
                     iced::widget::row![
                         button::primary_with(
+                            &theme,
                             "Loading",
                             Message::PrimaryPressed,
                             button::Size::Default,
                             true,
                         ),
                         button::secondary_with(
+                            &theme,
                             "Loading",
                             Message::PrimaryPressed,
                             button::Size::Default,
                             true,
                         ),
                         button::outline_with(
+                            &theme,
                             "Loading",
                             Message::PrimaryPressed,
                             button::Size::Default,
@@ -824,7 +831,7 @@ impl Gallery {
         let tooltip_section = section(
             &theme,
             "Tooltip",
-            tooltip::tooltip(&theme, button::outlined("Hover me", Message::ToggleDarkMode), "This is a tooltip").into(),
+            tooltip::tooltip(&theme, button::outlined(&theme, "Hover me", Message::ToggleDarkMode), "This is a tooltip").into(),
         );
 
         let card_section = section(
@@ -958,6 +965,7 @@ impl Gallery {
             &theme,
             "Empty State",
             empty_state::empty_state(
+                &theme,
                 Icon::Mail,
                 "No messages yet",
                 if self.empty_state_action_count == 0 {
@@ -980,7 +988,7 @@ impl Gallery {
             iced::widget::column![
                 menu::menu(
                     &theme,
-                    button::outlined("Open menu", Message::OpenMenu),
+                    button::outlined(&theme, "Open menu", Message::OpenMenu),
                     self.menu_open,
                     &MENU_ITEMS,
                     Message::MenuItemSelected,
@@ -996,8 +1004,8 @@ impl Gallery {
             &theme,
             "Dialog & Snackbar",
             iced::widget::row![
-                button::primary("Open dialog", Message::OpenDialog),
-                button::secondary("Show snackbar", Message::ShowSnackbar),
+                button::primary(&theme, "Open dialog", Message::OpenDialog),
+                button::secondary(&theme, "Show snackbar", Message::ShowSnackbar),
             ]
             .spacing(8)
             .into(),
@@ -1201,8 +1209,8 @@ impl Gallery {
             &theme,
             "Drawer & Backdrop",
             iced::widget::row![
-                button::primary("Open drawer", Message::OpenDrawer),
-                button::secondary("Open backdrop", Message::OpenBackdrop),
+                button::primary(&theme, "Open drawer", Message::OpenDrawer),
+                button::secondary(&theme, "Open backdrop", Message::OpenBackdrop),
             ]
             .spacing(8)
             .into(),
@@ -1282,8 +1290,8 @@ impl Gallery {
                 toolbar::toolbar(
                     iced::widget::text("12 items selected").font(system_font(FontWeight::Medium)),
                     vec![
-                        button::outline("Archive", Message::PrimaryPressed).into(),
-                        button::destructive("Delete", Message::PrimaryPressed).into(),
+                        button::outline(&theme, "Archive", Message::PrimaryPressed).into(),
+                        button::destructive(&theme, "Delete", Message::PrimaryPressed).into(),
                     ],
                 ),
             )
@@ -1298,7 +1306,7 @@ impl Gallery {
             &theme,
             "Confirm Dialog",
             iced::widget::column![
-                button::destructive("Delete account", Message::OpenConfirmDialog),
+                button::destructive(&theme, "Delete account", Message::OpenConfirmDialog),
                 iced::widget::text(confirm_dialog_status).font(system_font(FontWeight::Regular)),
             ]
             .spacing(8)
@@ -1309,7 +1317,7 @@ impl Gallery {
             &theme,
             "Toast",
             iced::widget::column![
-                button::primary("Show toast", Message::ShowToast),
+                button::primary(&theme, "Show toast", Message::ShowToast),
                 iced::widget::text(format!("{} toast(s) active", self.toasts.len())).font(system_font(FontWeight::Regular)),
             ]
             .spacing(8)
@@ -1554,8 +1562,8 @@ impl Gallery {
             "Confirm action",
             iced::widget::text("Are you sure you want to proceed?").font(system_font(FontWeight::Regular)),
             vec![
-                button::text_button("Cancel", Message::CloseDialog).into(),
-                button::primary("Confirm", Message::CloseDialog).into(),
+                button::text_button(&theme, "Cancel", Message::CloseDialog).into(),
+                button::primary(&theme, "Confirm", Message::CloseDialog).into(),
             ],
         );
 
@@ -1589,7 +1597,7 @@ impl Gallery {
             Some(
                 iced::widget::column![
                     iced::widget::text("Loading…").size(16).font(system_font(FontWeight::Regular)),
-                    button::text_button("Close", Message::CloseBackdrop),
+                    button::text_button(&theme, "Close", Message::CloseBackdrop),
                 ]
                 .spacing(12)
                 .align_x(iced::alignment::Horizontal::Center)
